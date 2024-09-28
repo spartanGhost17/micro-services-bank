@@ -36,8 +36,8 @@ public class AccountsServiceImpl implements IAccountsService {
         if(optionalCustomer.isPresent()) {
             throw new CustomerAlreadyExistsException("Customer already exists with given mobile number "+ customer.getMobileNumber());
         }
-        customer.setCreatedAt(LocalDateTime.now());
-        customer.setCreatedBy("Anonymous");
+        //customer.setCreatedAt(LocalDateTime.now());
+        //customer.setCreatedBy("Anonymous");
         Customer savedCustomer = customerRepository.save(customer);
 
         accountsRepository.save(createNewAccount(savedCustomer));
@@ -111,8 +111,8 @@ public class AccountsServiceImpl implements IAccountsService {
         newAccount.setAccountNumber(randomAccNumber);
         newAccount.setAccountType(AccountsConstants.SAVINGS);
         newAccount.setBranchAddress(AccountsConstants.ADDRESS);
-        newAccount.setCreatedAt(LocalDateTime.now());
-        newAccount.setCreatedBy("Anonymous");
+        //newAccount.setCreatedAt(LocalDateTime.now()); no longer needed because JPA auditing already takes care of it
+        //newAccount.setCreatedBy("Anonymous");
         return newAccount;
     }
 
