@@ -1,0 +1,24 @@
+server:
+  port: 8071
+
+
+spring:
+  application:
+    name: "configserver"
+  profiles:
+    #active: native # tell spring to activate native profile, only use when the config are locally located
+    active: git
+  cloud:
+    config:
+      server:
+        git:
+          uri: "https://github.com/spartanGhost17/micro-service-configs.git"
+          default-label: master
+          timeout: 5
+          clone-on-start: true
+          force-pull: true #override local changes to keep up to date
+        #native:
+          #search-locations: "file:///C://Users//adamb//DevProjects//apps//angularProjects//microservices//section6//config" #load from local directory outside of project
+          #search-locations: "classpath:/config" #tell spring where the configurations are located
+encrypt:
+  key: "ab7e817725a0319efb9e877035e3f3583e0e08fb27b8bb630888a17ac30777bc" #encrypt/decrypt all properties. if the properties value starts with {cipher}bla0bla1bla2
