@@ -78,7 +78,7 @@
                 <version>3.3.2</version>
                 <configuration>
                     <to>
-                        <image>spartanghost17/${project.artifactId}:s6</image>
+                        <image>spartanghost17/${project.artifactId}:s7</image>
                     </to>
                 </configuration>
             </plugin>

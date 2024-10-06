@@ -89,10 +89,6 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
-					<!--<image>
-						<name>spartanghost17/${project.artifactId}:s4</name>
-
-					</image>-->
 					<excludes>
 						<exclude>
 							<groupId>org.projectlombok</groupId>
@@ -107,7 +103,7 @@
 				<version>3.3.2</version>
 				<configuration>
 					<to>
-						<image>spartanghost17/${project.artifactId}:s6</image>
+						<image>spartanghost17/${project.artifactId}:s7</image>
 					</to>
 				</configuration>
 			</plugin>
