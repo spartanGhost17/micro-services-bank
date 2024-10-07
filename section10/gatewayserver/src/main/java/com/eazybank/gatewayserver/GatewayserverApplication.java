@@ -22,18 +22,22 @@ public class GatewayserverApplication {
                         .path("/eazybank/accounts/**")
                         .filters(f -> f.rewritePath("/eazybank/accounts/(?<segment>.*)", "/${segment}")
                                 .addResponseHeader("X-Response-Time", LocalDateTime.now().toString())
+                                .circuitBreaker(config -> config.setName("accountsCircuitBreaker")
+                                        .setFallbackUri("forward:/contactSupport"))
                         )
                         .uri("lb://ACCOUNTS")) //use load balancer to redirect for ACCOUNTS ms
                 .route(predicate -> predicate
                         .path("/eazybank/loans/**")
                         .filters(f -> f.rewritePath("/eazybank/loans/(?<segment>.*)", "/${segment}")
                                 .addResponseHeader("X-Response-Time", LocalDateTime.now().toString())
+                                .circuitBreaker(config -> config.setName("loansCircuitBreaker"))
                         )
                         .uri("lb://LOANS"))
                 .route(predicate -> predicate
                         .path("/eazybank/cards/**")
                         .filters(f -> f.rewritePath("/eazybank/cards/(?<segment>.*)", "/${segment}")
                                 .addResponseHeader("X-Response-Time", LocalDateTime.now().toString())
+                                .circuitBreaker(config -> config.setName("cardsCircuitBreaker"))
                         )
                         .uri("lb://CARDS"))
                 .build();

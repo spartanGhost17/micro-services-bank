@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import static com.eazybank.accounts.constants.AccountsConstants.EAZYBANK_CORRELATION_ID;
 
-@FeignClient(name = "loans")
+@FeignClient(name = "loans", fallback = LoansFallback.class)
 public interface LoansFeignClient {
 
     @GetMapping(value = "/api/fetch", produces = "application/json")
