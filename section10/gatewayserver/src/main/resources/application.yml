@@ -1,0 +1,43 @@
+spring:
+  application:
+    name: "gatewayserver"
+  config:
+    import: "optional:configserver:http://localhost:8071/" #optional means configs are optional
+  cloud:
+    gateway: # tell gateway to connect with discovery server and locate all information about individual microservices
+      discovery:
+        locator:
+          enabled: false # false will hide default locator info inside /actuator/gateway/routes and only expose the predefined
+          lowerCaseServiceId: true
+  #rabbitmq:
+  #  host: "localhost"
+  #  port: 5672
+  #  username: "guest"
+  #  password: "guest"
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*" #expose all management endpoints
+  endpoint:
+    gateway:
+      enabled: true
+  info:
+    env:
+      enabled: true # enables info endpoint for Eureka dashboard
+
+
+
+info:
+  app:
+    name: "gatewayserver"
+    description: "Eazy Bank GateWay Server Application"
+    version: "1.0.0"
+
+# enable logging
+logging:
+  level:
+    com:
+      eazybank:
+        gatewayserver: DEBUG
