@@ -54,3 +54,10 @@ info:
     name: "accounts"
     description: "Eazy Bank Accounts Application"
     version: "1.0.0"
+
+# enable logging
+logging:
+  level:
+    com:
+      eazybank:
+        accounts: DEBUG
