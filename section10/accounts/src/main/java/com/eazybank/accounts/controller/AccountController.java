@@ -7,6 +7,7 @@ import com.eazybank.accounts.dto.CustomerDto;
 import com.eazybank.accounts.dto.ErrorResponseDto;
 import com.eazybank.accounts.dto.ResponseDto;
 import com.eazybank.accounts.service.IAccountsService;
+import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
 import io.github.resilience4j.retry.annotation.Retry;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -235,9 +236,16 @@ public class AccountController {
                     )
             )
     })
+    @RateLimiter(name = "getJavaVersion", fallbackMethod = "getJavaVersionFallback")
     @GetMapping("java-version")
     public ResponseEntity<String> getJavaVersion() {
         return ResponseEntity.status(HttpStatus.OK).body(this.environment.getProperty("JAVA_HOME"));
+    }
+
+    public ResponseEntity<String> getJavaVersionFallback(Throwable throwable) {
+        logger.debug("getJavaVersionFallback() method invoked");
+        //maybe send cached information as fallback
+        return ResponseEntity.status(HttpStatus.OK).body("Java 17");
     }
 
     @Operation(

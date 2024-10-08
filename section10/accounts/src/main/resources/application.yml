@@ -94,3 +94,10 @@ resilience4j.retry:
         - java.lang.NullPointerException #ignore exceptions of type null pointer exception
       retryExceptions:
         - java.util.concurrent.TimeoutException
+
+resilience4j.ratelimiter:
+  configs:
+    default:
+      timeoutDuration: 1000 #500 This is the maximum time a thread will wait for permission before throwing an exception
+      limitRefreshPeriod: 5000 #60000 This defines how often the rate limiter refreshes its permissions. moderate traffic 5s is fine, high traffic consider 1s - 2s
+      limitForPeriod: 1 #100 This is the number of permissions available during one refresh period, between 20 and 50 requests in suitable (how many request can be handled per limitRefresh period)

@@ -7,10 +7,13 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.circuitbreaker.resilience4j.ReactiveResilience4JCircuitBreakerFactory;
 import org.springframework.cloud.circuitbreaker.resilience4j.Resilience4JConfigBuilder;
 import org.springframework.cloud.client.circuitbreaker.Customizer;
+import org.springframework.cloud.gateway.filter.ratelimit.KeyResolver;
+import org.springframework.cloud.gateway.filter.ratelimit.RedisRateLimiter;
 import org.springframework.cloud.gateway.route.RouteLocator;
 import org.springframework.cloud.gateway.route.builder.RouteLocatorBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
+import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -54,6 +57,10 @@ public class GatewayserverApplication {
                                 .addResponseHeader("X-Response-Time", LocalDateTime.now().toString())
                                 .circuitBreaker(config -> config.setName("cardsCircuitBreaker")
                                 )
+                                .requestRateLimiter(config -> config
+                                        .setRateLimiter(redisRateLimiter()) // pass redis rate limiter bean
+                                        .setKeyResolver(userKeyResolver()) // set key resolver
+                                )
                         )
                         .uri("lb://CARDS"))
                 .build();
@@ -69,6 +76,21 @@ public class GatewayserverApplication {
                         .build()
                 )
                 .build());
+    }
+
+
+    @Bean
+    public RedisRateLimiter redisRateLimiter() {
+        //add 1 token per second, burst capacity 1, cost per request is 1 token
+        return new RedisRateLimiter(1, 1, 1);
+    }
+
+
+    @Bean
+    KeyResolver userKeyResolver() {
+        //this logic can be as complex as needed
+        return exchange -> Mono.justOrEmpty(exchange.getRequest().getQueryParams().getFirst("user"))//get user principal
+                .defaultIfEmpty("anonymous");
     }
 
 }
