@@ -203,11 +203,9 @@ public class AccountController {
     })
     @Retry(name = "getBuildInfo", fallbackMethod = "getBuildInfoFallback")
     @GetMapping("build-info")
-    public ResponseEntity<String> getBuildInfo() throws TimeoutException {
+    public ResponseEntity<String> getBuildInfo() {
         logger.debug("getBuildInfo() method called");
-        //throw new NullPointerException();
-        throw new TimeoutException();
-        //return ResponseEntity.status(HttpStatus.OK).body(this.buildVersion);
+        return ResponseEntity.status(HttpStatus.OK).body(this.buildVersion);
     }
 
     /**
