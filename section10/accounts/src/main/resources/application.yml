@@ -75,11 +75,22 @@ logging:
       eazybank:
         accounts: DEBUG
 
-resilience4j:
-  circuitbreaker:
+resilience4j.circuitbreaker:
     configs:
       default:
         slidingWindowSize: 10 #100 Monitor 100 requests before deciding whether to change the state
         permittedNumberOfCallsInHalfOpenState: 2 #5 Allow 5 calls in half-open state to test the service's recovery
         failureRateThreshold: 50 # Open the circuit if 50% of requests fail
         waitDurationInOpenState: 10000 #20000 Keep the circuit breaker open for 20 seconds before transitioning to half-open state
+
+resilience4j.retry:
+  configs:
+    default:
+      maxAttempts: 3 # max retry attemps
+      waitDuration: 100 # 500
+      enableExponentialBackoff: true
+      exponentialBackoffMultiplier: 2
+      ignoreExceptions:
+        - java.lang.NullPointerException #ignore exceptions of type null pointer exception
+      retryExceptions:
+        - java.util.concurrent.TimeoutException

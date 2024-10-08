@@ -9,6 +9,9 @@ spring:
         locator:
           enabled: false # false will hide default locator info inside /actuator/gateway/routes and only expose the predefined
           lowerCaseServiceId: true
+      httpclient:
+        connectTimeout: 1000
+        responseTimeout: 2s #5s
   #rabbitmq:
   #  host: "localhost"
   #  port: 5672
