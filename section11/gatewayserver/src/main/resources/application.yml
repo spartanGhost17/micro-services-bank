@@ -1,0 +1,62 @@
+spring:
+  application:
+    name: "gatewayserver"
+  config:
+    import: "optional:configserver:http://localhost:8071/" #optional means configs are optional
+  cloud:
+    gateway: # tell gateway to connect with discovery server and locate all information about individual microservices
+      discovery:
+        locator:
+          enabled: false # false will hide default locator info inside /actuator/gateway/routes and only expose the predefined
+          lowerCaseServiceId: true
+      httpclient:
+        connectTimeout: 1000
+        responseTimeout: 2s #5s
+  #rabbitmq:
+  #  host: "localhost"
+  #  port: 5672
+  #  username: "guest"
+  #  password: "guest"
+
+  data: #redis
+    redis:
+      connect-timeout: 2s
+      host: localhost
+      port: 6379
+      timeout: 1s
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*" #expose all management endpoints
+  endpoint:
+    gateway:
+      enabled: true
+  info:
+    env:
+      enabled: true # enables info endpoint for Eureka dashboard
+
+
+
+info:
+  app:
+    name: "gatewayserver"
+    description: "Eazy Bank GateWay Server Application"
+    version: "1.0.0"
+
+# enable logging
+logging:
+  level:
+    com:
+      eazybank:
+        gatewayserver: DEBUG
+
+resilience4j:
+  circuitbreaker:
+    configs:
+      default:
+        slidingWindowSize: 10 #100 Monitor 100 requests before deciding whether to change the state
+        permittedNumberOfCallsInHalfOpenState: 2 #5 Allow 5 calls in half-open state to test the service's recovery
+        failureRateThreshold: 50 # Open the circuit if 50% of requests fail
+        waitDurationInOpenState: 10000 #20000 Keep the circuit breaker open for 20 seconds before transitioning to half-open state
