@@ -41,6 +41,9 @@ management:
   info:
     env:
       enabled: true # enables info endpoint for Eureka dashboard
+  metrics: # expose metrics endpoint for prometheus or other metric collection
+    tags:
+      application: ${spring.application.name} # group metrics under application name
 
 endpoints:
   shutdown:
@@ -66,4 +69,6 @@ logging:
   level:
     com:
       eazybytes:
-        loans: DEBUG
+        cards: DEBUG
+  pattern:
+    level: "%5p [${spring.application.name},%X{trace_id},%X{span_id}]"

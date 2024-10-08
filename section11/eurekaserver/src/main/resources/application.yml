@@ -23,3 +23,15 @@ management:
     health:
       probes:
         enabled: true
+  metrics: # expose metrics endpoint for prometheus or other metric collection
+    tags:
+      application: ${spring.application.name} # group metrics under application name
+
+# enable logging
+logging:
+  level:
+    com:
+      eazybytes:
+        cards: DEBUG
+  pattern:
+    level: "%5p [${spring.application.name},%X{trace_id},%X{span_id}]"

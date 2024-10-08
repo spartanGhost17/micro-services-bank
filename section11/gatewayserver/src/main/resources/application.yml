@@ -11,7 +11,7 @@ spring:
           lowerCaseServiceId: true
       httpclient:
         connectTimeout: 1000
-        responseTimeout: 2s #5s
+        responseTimeout: 10s #5s wait time seconds to get response from microservices
   #rabbitmq:
   #  host: "localhost"
   #  port: 5672
@@ -36,7 +36,9 @@ management:
   info:
     env:
       enabled: true # enables info endpoint for Eureka dashboard
-
+  metrics: # expose metrics endpoint for prometheus or other metric collection
+    tags:
+      application: ${spring.application.name} # group metrics under application name
 
 
 info:
@@ -49,8 +51,10 @@ info:
 logging:
   level:
     com:
-      eazybank:
-        gatewayserver: DEBUG
+      eazybytes:
+        cards: DEBUG
+  pattern:
+    level: "%5p [${spring.application.name},%X{trace_id},%X{span_id}]"
 
 resilience4j:
   circuitbreaker:

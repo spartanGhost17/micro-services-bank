@@ -43,6 +43,18 @@ management:
     health:
       probes:
         enabled: true
+  metrics: # expose metrics endpoint for prometheus or other metric collection
+    tags:
+      application: ${spring.application.name} # group metrics under application name
 
 encrypt:
   key: "ab7e817725a0319efb9e877035e3f3583e0e08fb27b8bb630888a17ac30777bc" #encrypt/decrypt all properties. if the properties value starts with {cipher}bla0bla1bla2
+
+# enable logging
+logging:
+  level:
+    com:
+      eazybytes:
+        cards: DEBUG
+  pattern:
+    level: "%5p [${spring.application.name},%X{trace_id},%X{span_id}]"
