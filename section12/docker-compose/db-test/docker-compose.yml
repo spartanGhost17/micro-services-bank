@@ -1,4 +1,5 @@
 services:
+  # databases for local development
   accountsdb:
     image: mysql
     container_name: accountsdb

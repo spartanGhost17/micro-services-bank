@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  toot-service:
+    image: toot:s11
+    depends_on: []
+    entrypoint: ["/bin/sh", "-c", "./wait-for-db.sh && ng serve"]
+    volumes:
+      - ./wait-for-db.sh:/usr/src/app/wait-for-db.sh
+    working_dir: /usr/src/app
+    environment:
+      - NODE_ENV=production
+      - DB_USER=your-username
+      - DB_PASSWORD=your-password
+    ports:
+      - "4200:4200"

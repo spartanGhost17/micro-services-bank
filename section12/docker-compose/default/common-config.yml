@@ -28,7 +28,7 @@ services:
           memory: 700m
     environment:
       SPRING_RABBITMQ_HOST: "rabbit"
-      JAVA_TOOL_OPTIONS: "-javaagent:/app/libs/opentelemetry-javaagent-1.33.5.jar"
+      JAVA_TOOL_OPTIONS: "-javaagent:/app/libs/opentelemetry-javaagent-1.33.5.jar" # for
       OTEL_EXPORTER_OTLP_ENDPOINT: http://tempo:4317
       OTEL_METRICS_EXPORTER: none # because metrics are being exported by prometheus
 
