@@ -18,6 +18,12 @@ spring:
   #  username: "guest"
   #  password: "guest"
 
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: "http://localhost:7080/realms/master/protocol/openid-connect/certs" # downloads public certificate from resource server to validate the provided tokens
+
   data: #redis
     redis:
       connect-timeout: 2s
