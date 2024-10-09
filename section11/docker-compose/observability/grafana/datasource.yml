@@ -41,7 +41,7 @@ datasources:
     url: http://gateway:3100
     jsonData:
       httpHeaderName1: "X-Scope-OrgID"
-      derivedFields:
+      derivedFields: # Tempo also allows to create derived fields in Grafana to dynamically open Loki dashboard when traceID is clicked
         - datasourceUid: tempo
           matcherRegex: "\\[.+,(.+),.+\\]"
           name: TraceID

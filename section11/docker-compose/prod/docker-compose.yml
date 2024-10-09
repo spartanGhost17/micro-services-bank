@@ -96,7 +96,7 @@ services:
       file: common-config.yml
       service: network-deploy-service
 
-  prometheus:
+  prometheus: # for metrics aggregation
     image: prom/prometheus:v2.50.1
     container_name: prometheus
     ports:
@@ -107,7 +107,7 @@ services:
       file: common-config.yml
       service: network-deploy-service
 
-  tempo:
+  tempo: # for distributed tracing
     image: grafana/tempo:2.4.2
     container_name: tempo
     command: -config.file /etc/tempo-config.yml
@@ -286,10 +286,12 @@ services:
     #    condition: service_healthy
     healthcheck:
       test: "curl --fail --silent localhost:8071/actuator/health/readiness | grep UP || exit 1" #check if up or exit with error
-      interval: 10s #interval of retries
+      interval: 20s #interval of retries
       timeout: 5s #time for response
-      retries: 10
+      retries: 20
       start_period: 10s # will evaluate 10s after start
+    environment:
+      OTEL_SERVICE_NAME: "configserver"
     extends:
       file: common-config.yml
       service: microservice-base-config
@@ -306,12 +308,13 @@ services:
       #  condition: service_healthy
     healthcheck:
       test: "curl --fail --silent localhost:8070/actuator/health/readiness | grep UP || exit 1" #check if up or exit with error
-      interval: 10s #interval of retries
+      interval: 20s #interval of retries
       timeout: 5s #time for response
-      retries: 10
+      retries: 20
       start_period: 10s # will evaluate 10s after start
     environment:
       SPRING_APPLICATION_NAME: "eurekaserver"
+      OTEL_SERVICE_NAME: "eurekaserver"
     extends:
       file: common-config.yml
       service: microservice-configserver-config
@@ -326,13 +329,14 @@ services:
         condition: service_healthy
     healthcheck:
       test: "curl --fail --silent localhost:8080/actuator/health/readiness | grep UP || exit 1" #check if up or exit with error
-      interval: 10s #interval of retries
+      interval: 20s #interval of retries
       timeout: 5s #time for response
-      retries: 10
+      retries: 20
       start_period: 10s # will evaluate 10s after start
     environment:
       SPRING_APPLICATION_NAME: "accounts"
       SPRING_DATASOURCE_URL: "jdbc:mysql://accountsdb:3306/accountsdb"
+      OTEL_SERVICE_NAME: "accounts"
     extends:
       file: common-config.yml
       service: microservice-eureka-config
@@ -347,13 +351,14 @@ services:
         condition: service_healthy
     healthcheck:
       test: "curl --fail --silent localhost:8090/actuator/health/readiness | grep UP || exit 1" #check if up or exit with error
-      interval: 10s #interval of retries
+      interval: 20s #interval of retries
       timeout: 5s #time for response
-      retries: 10
+      retries: 20
       start_period: 10s # will evaluate 10s after start
     environment:
       SPRING_APPLICATION_NAME: "loans"
       SPRING_DATASOURCE_URL: "jdbc:mysql://loansdb:3306/loansdb"
+      OTEL_SERVICE_NAME: "loans"
     extends:
       file: common-config.yml
       service: microservice-eureka-config
@@ -368,13 +373,14 @@ services:
         condition: service_healthy
     healthcheck:
       test: "curl --fail --silent localhost:9000/actuator/health/readiness | grep UP || exit 1" #check if up or exit with error
-      interval: 10s #interval of retries
+      interval: 20s #interval of retries
       timeout: 5s #time for response
-      retries: 10
+      retries: 20
       start_period: 10s # will evaluate 10s after start
     environment:
       SPRING_APPLICATION_NAME: "cards"
       SPRING_DATASOURCE_URL: "jdbc:mysql://cardsdb:3306/cardsdb"
+      OTEL_SERVICE_NAME: "cards"
     extends:
       file: common-config.yml
       service: microservice-eureka-config
@@ -399,6 +405,7 @@ services:
       SPRING_DATA_REDIS_HOST: redis
       SPRING_DATA_REDIS_PORT: 6379
       SPRING_DATA_REDIS_TIMEOUT: 1s
+      OTEL_SERVICE_NAME: "gatewayserver"
     extends:
       file: common-config.yml
       service: microservice-eureka-config
