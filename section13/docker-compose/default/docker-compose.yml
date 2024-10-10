@@ -290,7 +290,7 @@ services:
       service: network-deploy-service
 
   configserver:
-    image: "spartanghost17/configserver:s12"
+    image: "spartanghost17/configserver:s13"
     container_name: configserver-ms
     ports:
       - "8071:8071"
@@ -310,7 +310,7 @@ services:
       service: microservice-base-config
 
   eurekaserver:
-    image: "spartanghost17/eurekaserver:s12"
+    image: "spartanghost17/eurekaserver:s13"
     container_name: eurekaserver-ms
     ports:
       - "8070:8070"
@@ -333,7 +333,7 @@ services:
       service: microservice-configserver-config
 
   accounts:
-    image: "spartanghost17/accounts:s12"
+    image: "spartanghost17/accounts:s13"
     container_name: accounts-ms
     #ports: commented out to isolate from outside network
     #  - "8080:8080"
@@ -355,7 +355,7 @@ services:
       service: microservice-eureka-config
 
   loans:
-    image: "spartanghost17/loans:s12"
+    image: "spartanghost17/loans:s13"
     container_name: loans-ms
     #ports: commented out to isolate from outside network
     #  - "8090:8090"
@@ -377,7 +377,7 @@ services:
       service: microservice-eureka-config
 
   cards:
-    image: "spartanghost17/cards:s12"
+    image: "spartanghost17/cards:s13"
     container_name: cards-ms
     #ports: commented out to isolate from outside network
     #  - "9000:9000"
@@ -399,7 +399,7 @@ services:
       service: microservice-eureka-config
 
   gatewayserver:
-    image: "spartanghost17/gatewayserver:s12"
+    image: "spartanghost17/gatewayserver:s13"
     container_name: gatewayserver-ms
     ports:
       - "8072:8072"

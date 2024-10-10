@@ -114,6 +114,21 @@
 			<groupId>io.micrometer</groupId>
 			<artifactId>micrometer-registry-prometheus</artifactId>
 		</dependency>
+
+		<!-- cloud event streaming -->
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-stream</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-stream-binder-rabbit</artifactId> <!-- binder -->
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-stream-test-binder</artifactId>
+			<scope>test</scope>
+		</dependency>
 		<!--<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-bus-amqp</artifactId>
@@ -140,7 +155,7 @@
 				<version>3.3.2</version>
 				<configuration>
 					<to>
-						<image>spartanghost17/${project.artifactId}:s12</image>
+						<image>spartanghost17/${project.artifactId}:s13</image>
 					</to>
 				</configuration>
 			</plugin>

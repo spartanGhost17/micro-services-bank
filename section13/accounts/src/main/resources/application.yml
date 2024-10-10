@@ -22,11 +22,20 @@ spring:
     openfeign:
       circuitbreaker:
         enabled: true
-  #rabbitmq:
-  #  host: "localhost"
-  #  port: 5672
-  #  username: "guest"
-  #  password: "guest"
+    function: # spring cloud functions definition (multiple definitions can be comma seperated)
+      definition: updateCommunication
+    stream:
+      bindings:
+        updateCommunication-in-0:
+          destination: communication-sent # exchange name
+          group: ${spring.application.name}
+        sendCommunication-out-0: # will bind output to send-communication exchange as outbound message on a queue
+          destination: send-communication # name of the exchange
+  rabbitmq:
+    host: "localhost"
+    port: 5672
+    username: "guest"
+    password: "guest"
 
 management:
   endpoints:

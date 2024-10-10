@@ -1,0 +1,22 @@
+server:
+  port: 9010
+
+spring:
+  application:
+    name: "message"
+  cloud:
+    function:
+      definition: email|sms # combine both functions into a single logical unit
+    stream:
+      bindings: # establish integration between broker and functions
+        emailsms-in-0: # input binding with 0 starting index
+          destination: send-communication # queue name
+          group: ${spring.application.name} # avoid random id attached to channel names
+        emailsms-out-0: # input binding with 0 starting index
+          destination: communication-sent # queue name
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+    connection-timeout: 10s

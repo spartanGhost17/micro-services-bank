@@ -12,7 +12,7 @@
 	<artifactId>message</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>message</name>
-	<description>message</description>
+	<description>Microservice to support messaging in EazyBank</description>
 	<url/>
 	<licenses>
 		<license/>
@@ -35,14 +35,34 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter</artifactId>
 		</dependency>
-		<dependency>
+
+		<!-- spring cloud function context -->
+		<!--<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-function-context</artifactId>
-		</dependency>
+		</dependency>-->
+		<!-- expose function as endpoint -->
+		<!--<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-function-web</artifactId>
+		</dependency>-->
 
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-stream</artifactId> <!--bindings / comes with spring-cloud-function-->
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-stream-binder-rabbit</artifactId> <!-- binders -->
+		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-stream-test-binder</artifactId>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
@@ -63,6 +83,16 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>com.google.cloud.tools</groupId>
+				<artifactId>jib-maven-plugin</artifactId>
+				<version>3.3.2</version>
+				<configuration>
+					<to>
+						<image>spartanghost17/${project.artifactId}:s13</image>
+					</to>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
