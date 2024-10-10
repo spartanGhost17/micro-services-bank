@@ -1,6 +1,29 @@
 # Understand how microservices work with a fictional bank
 
-This project provides a look at best practices in microservices, from dynamically loading configuration from remote repos with webhook refreshes via spring cloud monitor with /monitor,
+# How to run
+
+## 1 deploy the container
+
+To do this, you will need `Docker` and `Docker Compose` on your system.
+
+```
+    ~$ cd section13/docker-compose/default
+    ~$ docker compose up -d
+
+```
+
+You can pick any profile from, `default`, `prod` or `qa` simply change to the appropriate directory under `/docker-compose` to either `/docker-compose/prod` or `/docker-compose/qa`.
+
+## 2 To tear down your containers:
+
+```
+    ~$ cd section13/docker-compose/default
+    ~$ docker compose down
+```
+
+# About the project
+
+This is a demo project provides a look at best practices in microservices. From dynamically loading configuration from remote repos with webhook refreshes via spring cloud monitor with /monitor,
 to best practices in microservices resiliency patterns such as:
 
 - Circuit breakers
