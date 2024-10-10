@@ -33,6 +33,23 @@ to best practices in microservices resiliency patterns such as:
 
 It also applies inter-service communication in a decalarative manner using OpenFeign, leverages RabbitMQ for event streaming and use Spring Cloud functions with Cloud Stream for an easy FaaS integration with cloud-stream-binder-rabbit.
 
+## Changing stream binder
+
+If you wish to change the stream binder configuration, you simply need to replace `spring-cloud-stream-binder-rabbit` with your prefered binder abstraction, example: `spring-cloud-stream-binder-rabbit`.
+
+Then you need to replace assign the configuration for the broker inside the `application.yml` of the service you want to use kafka. This must be set for both Producer and Consumer.
+
+Example:
+
+```
+  rabbitmq:
+    host: "localhost"
+    port: 5672
+    username: "guest"
+    password: "guest"
+
+```
+
 ## Security
 
 This Project also made use OAuth2 server thourough kecloak by creating both a Authorization Code Grant Type client and a Client Credentials Grant Type client.
