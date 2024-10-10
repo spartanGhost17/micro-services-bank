@@ -42,11 +42,15 @@ Then you need to replace assign the configuration for the broker inside the `app
 Example:
 
 ```
-  rabbitmq:
-    host: "localhost"
-    port: 5672
-    username: "guest"
-    password: "guest"
+spring:
+  application:
+    name: "accounts"
+  cloud:
+    stream:
+      kafka:
+        binder:
+          brokers:
+            - localhost:9092
 
 ```
 
