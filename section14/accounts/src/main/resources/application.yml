@@ -31,6 +31,11 @@ spring:
           group: ${spring.application.name}
         sendCommunication-out-0: # will bind output to send-communication exchange as outbound message on a queue
           destination: send-communication # name of the exchange
+      kafka:
+        binder:
+          brokers:
+            - localhost:9092
+
   rabbitmq:
     host: "localhost"
     port: 5672

@@ -14,6 +14,12 @@ spring:
           group: ${spring.application.name} # avoid random id attached to channel names
         emailsms-out-0: # input binding with 0 starting index
           destination: communication-sent # queue name
+      kafka:
+        binder:
+          brokers: # can have multiple instances
+            - localhost:9092
+
+  # this is being used a broker for configuration update not the main message broker
   rabbitmq:
     host: localhost
     port: 5672
