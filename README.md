@@ -23,11 +23,7 @@ You can pick any profile from, `default`, `prod` or `qa` simply change to the ap
 
 # 3. Running in Kubernetes Cluster
 
-You can also run this entire application using kubernetes. See Section about `Kuberentes` below to
-
-```
-    ~$
-```
+You can also run this entire application using kubernetes. See Section about `Kuberentes` below to `section 6`.
 
 # 4. About the project
 
