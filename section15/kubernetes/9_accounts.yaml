@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: accounts
-          image: eazybytes/accounts:s12
+          image: spartanghost17/accounts:s12
           ports:
             - containerPort: 8080
           env:
@@ -40,6 +40,22 @@ spec:
                 configMapKeyRef:
                   name: eazybank-configmap
                   key: EUREKA_CLIENT_SERVICEURL_DEFAULTZONE
+            - name: SPRING_DATASOURCE_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: eazybank-configmap
+                  key: ACCOUNTS_SPRING_DATASOURCE_URL
+            - name: SPRING_DATASOURCE_USERNAME
+              valueFrom:
+                configMapKeyRef:
+                  name: eazybank-configmap
+                  key: SPRING_DATASOURCE_USERNAME
+            - name: SPRING_DATASOURCE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: eazybank-secrets
+                  key: SPRING_DATASOURCE_PASSWORD
+
 ---
 apiVersion: v1
 kind: Service
