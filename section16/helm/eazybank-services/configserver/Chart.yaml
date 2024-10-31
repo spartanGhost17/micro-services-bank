@@ -27,3 +27,6 @@ dependencies:
   - name: eazybank-common
     version: 0.1.0
     repository: file://../../eazybank-common
+  - name: rabbit
+    version: 0.1.0
+    repository: file://../rabbit
