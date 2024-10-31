@@ -16,8 +16,10 @@ containerPort: 9000
 
 service:
   type: ClusterIP
-  port: 9000
-  targetPort: 9000
+  ports:
+    - name: cards
+      port: 9000
+      targetPort: 9000
 
 appname_enabled: true
 profile_enabled: true

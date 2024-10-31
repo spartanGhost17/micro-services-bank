@@ -16,8 +16,10 @@ containerPort: 3306
 
 service:
   type: ClusterIP
-  port: 3306
-  targetPort: 3306
+  ports:
+    - name: accountsdb
+      port: 3306
+      targetPort: 3306
 
 appname_enabled: false
 profile_enabled: false

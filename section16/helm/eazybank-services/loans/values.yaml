@@ -16,8 +16,10 @@ containerPort: 8090
 
 service:
   type: ClusterIP
-  port: 8090
-  targetPort: 8090
+  ports:
+    - name: loans
+      port: 8090
+      targetPort: 8090
 
 appname_enabled: true
 profile_enabled: true
