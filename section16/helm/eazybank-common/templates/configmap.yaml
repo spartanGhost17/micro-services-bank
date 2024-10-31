@@ -14,6 +14,9 @@ data:
   SPRING_CLOUD_STREAM_KAFKA_BINDER_BROKERS: {{ .Values.global.kafkaBrokerURL }}
   #RABBITMQ_DEFAULT_USER: {{ .Values.global.rabbitMQDefaultUser }} #"guest"
   SPRING_RABBITMQ_HOST: {{ .Values.global.rabbitMQHost }}
+  SPRING_RABBITMQ_USERNAME: {{ .Values.global.rabbitMQUsername }}
+  SPRING_RABBITMQ_PASSWORD: {{ .Values.global.rabbitMQPassword }}
+  SPRING_RABBITMQ_PORT: {{ .Values.global.rabbitMQPort }}
   SPRING_DATA_REDIS_CONNECT-TIMEOUT: {{ .Values.global.redisConnectTimeout }} #2s
   SPRING_DATA_REDIS_HOST: {{ .Values.global.redisHost }} 
   SPRING_DATA_REDIS_PORT: {{ .Values.global.redisPort }}
