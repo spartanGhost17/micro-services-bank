@@ -19,8 +19,16 @@ spec:
       - name: {{ .Values.appLabel }}
         image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
         ports:
-        - containerPort: {{ .Values.containerPort }}
-          protocol: TCP
+          {{- range .Values.ports }}
+            {{- if .name }}
+            - containerPort: {{ .targetPort }}
+              name: {{ .name }}
+              protocol: TCP
+            {{- else }}
+            - containerPort: {{ .targetPort }}
+              protocol: TCP
+            {{- end }}
+          {{- end }}
         env:
         {{- if .Values.appname_enabled }}
         - name: SPRING_APPLICATION_NAME
@@ -86,7 +94,34 @@ spec:
             configMapkeyRef:
               name: {{ .Values.global.configMapName }}
               key: SPRING_RABBITMQ_HOST # rabbit
+        - name: SPRING_RABBITMQ_USERNAME
+          valueFrom:
+            configMapkeyRef:
+              name: {{ .Values.global.configMapName }}
+              key: SPRING_RABBITMQ_USERNAME
+        - name: SPRING_RABBITMQ_PASSWORD
+          valueFrom:
+            configMapkeyRef:
+              name: {{ .Values.global.configMapName }}
+              key: SPRING_RABBITMQ_PASSWORD
+        - name: SPRING_RABBITMQ_PORT
+          valueFrom:
+            configMapkeyRef:
+              name: {{ .Values.global.configMapName }}
+              key: SPRING_RABBITMQ_PORT
         {{- end }}
+        {{- if .Values.rabbit_server }}
+        - name: RABBITMQ_DEFAULT_USER
+          valueFrom:
+            configMapkeyRef:
+              name: {{ .Values.global.configMapName }}
+              key: SPRING_RABBITMQ_USERNAME
+        - name: RABBITMQ_DEFAULT_PASS
+          valueFrom:
+            configMapkeyRef:
+              name: {{ .Values.global.configMapName }}
+              key: SPRING_RABBITMQ_PASSWORD
+        {{- end}}
         {{- if .Values.redis_enabled }}
         - name: SPRING_DATA_REDIS_CONNECT-TIMEOUT
           valueFrom:

@@ -1,9 +1,0 @@
-dependencies:
-- name: accountsdb
-  repository: file://../accountsdb
-  version: 0.1.0
-- name: eazybank-common
-  repository: file://../../eazybank-common
-  version: 0.1.0
-digest: sha256:0bc18f315faea8bc6526c9aca202056d0048d3b4d59e89ed66c18e38709fabb6
-generated: "2024-10-30T12:09:31.5886204Z"
