@@ -1,0 +1,12 @@
+dependencies:
+- name: accountsdb
+  repository: file://../accountsdb
+  version: 0.1.0
+- name: rabbit
+  repository: file://../rabbit
+  version: 0.1.0
+- name: eazybank-common
+  repository: file://../../eazybank-common
+  version: 0.1.0
+digest: sha256:face33a39dd8d72f4a3de91d3ef0a313c3804ed8ccaab2d8d2d86411d53d7e44
+generated: "2024-10-31T11:34:49.12258Z"
