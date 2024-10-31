@@ -1,0 +1,12 @@
+dependencies:
+- name: cardsdb
+  repository: file://../cardsdb
+  version: 0.1.0
+- name: rabbit
+  repository: file://../rabbit
+  version: 0.1.0
+- name: eazybank-common
+  repository: file://../../eazybank-common
+  version: 0.1.0
+digest: sha256:dc5a22e0b6a82d88995cc16a6f1d77676a7486eec09da370808cd3c61b8bab10
+generated: "2024-10-31T11:40:15.269944Z"
