@@ -9,4 +9,4 @@ dependencies:
   repository: file://../../eazybank-common
   version: 0.1.0
 digest: sha256:15f1c5c979e58e0e3cb8c6f4a62f19ef81250fd00295e4563245d8558eb4c13c
-generated: "2024-10-31T13:23:51.3096334Z"
+generated: "2024-10-31T13:30:12.1612009Z"
