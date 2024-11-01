@@ -93,7 +93,7 @@ spec:
           valueFrom:
             configMapkeyRef:
               name: {{ .Values.global.configMapName }}
-              key: SPRING_RABBITMQ_HOST # rabbit
+              key: SPRING_RABBITMQ_HOST
         - name: SPRING_RABBITMQ_USERNAME
           valueFrom:
             configMapkeyRef:
@@ -145,8 +145,6 @@ spec:
               key: SPRING_DATA_REDIS_TIMEOUT
         {{- end }}
         {{- if .Values.datasource_enabled }}
-          # add data source environment variables
-          # Add environment variables specific to accountsdb and ms-service
           {{- if and (eq .Values.app_type "ms") (eq .Values.databaseName "accountsdb") }}
           - name: SPRING_DATASOURCE_USERNAME
             valueFrom:
