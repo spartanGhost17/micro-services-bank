@@ -68,10 +68,10 @@ dependencies:
     version: 0.1.0
     repository: file://../../../eazybank-services/loansdb
 
-  - name: rabbit
-    version: 0.1.0
-    repository: file://../../../eazybank-services/rabbit
+  #- name: rabbit
+  #  version: 0.1.0
+  #  repository: file://../../../eazybank-services/rabbit
 
-  - name: redis
-    version: 0.1.0
-    repository: file://../../../eazybank-services/redis
+  #- name: redis
+  #  version: 0.1.0
+  #  repository: file://../../../eazybank-services/redis
