@@ -23,7 +23,7 @@ service:
 
 appname_enabled: true
 profile_enabled: false
-config_enabled: false
+config_enabled: true
 eureka_enabled: false
 resouceserver_enabled: false
 otel_enabled: true
