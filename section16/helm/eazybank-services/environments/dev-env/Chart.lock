@@ -32,11 +32,5 @@ dependencies:
 - name: loansdb
   repository: file://../../../eazybank-services/loansdb
   version: 0.1.0
-- name: rabbit
-  repository: file://../../../eazybank-services/rabbit
-  version: 0.1.0
-- name: redis
-  repository: file://../../../eazybank-services/redis
-  version: 0.1.0
-digest: sha256:bc7be43b9aa726f19ff9bf7a9b81c8ab0652fda1580af6d11f1f017df95083b8
-generated: "2024-11-01T15:29:00.1940615Z"
+digest: sha256:b148cdb6a6c0faecbfd71bffcfbd2e934d2b4a3b77e422da23afc805e664797c
+generated: "2024-11-01T20:33:13.0145855Z"

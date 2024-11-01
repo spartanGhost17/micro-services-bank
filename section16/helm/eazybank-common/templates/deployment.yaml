@@ -95,56 +95,56 @@ spec:
         {{- if .Values.rabbit_enabled }}
         - name: SPRING_RABBITMQ_HOST
           valueFrom:
-            configMapkeyRef:
+            configMapKeyRef:
               name: {{ .Values.global.configMapName }}
               key: SPRING_RABBITMQ_HOST
         - name: SPRING_RABBITMQ_USERNAME
           valueFrom:
-            configMapkeyRef:
+            configMapKeyRef:
               name: {{ .Values.global.configMapName }}
               key: SPRING_RABBITMQ_USERNAME
         - name: SPRING_RABBITMQ_PASSWORD
           valueFrom:
-            configMapkeyRef:
+            configMapKeyRef:
               name: {{ .Values.global.configMapName }}
               key: SPRING_RABBITMQ_PASSWORD
         - name: SPRING_RABBITMQ_PORT
           valueFrom:
-            configMapkeyRef:
+            configMapKeyRef:
               name: {{ .Values.global.configMapName }}
               key: SPRING_RABBITMQ_PORT
         {{- end }}
         {{- if .Values.rabbit_server }}
         - name: RABBITMQ_DEFAULT_USER
           valueFrom:
-            configMapkeyRef:
+            configMapKeyRef:
               name: {{ .Values.global.configMapName }}
               key: SPRING_RABBITMQ_USERNAME
         - name: RABBITMQ_DEFAULT_PASS
           valueFrom:
-            configMapkeyRef:
+            configMapKeyRef:
               name: {{ .Values.global.configMapName }}
               key: SPRING_RABBITMQ_PASSWORD
         {{- end}}
         {{- if .Values.redis_enabled }}
         - name: SPRING_DATA_REDIS_CONNECT-TIMEOUT
           valueFrom:
-            configMapkeyRef:
+            configMapKeyRef:
               name: {{ .Values.global.configMapName }}
               key: SPRING_DATA_REDIS_CONNECT-TIMEOUT
         - name: SPRING_DATA_REDIS_HOST
           valueFrom:
-            configMapkeyRef:
+            configMapKeyRef:
               name: {{ .Values.global.configMapName }}
               key: SPRING_DATA_REDIS_HOST
         - name: SPRING_DATA_REDIS_PORT
           valueFrom:
-            configMapkeyRef:
+            configMapKeyRef:
               name: {{ .Values.global.configMapName }}
               key: SPRING_DATA_REDIS_PORT
         - name: SPRING_DATA_REDIS_TIMEOUT
           valueFrom:
-            configMapkeyRef:
+            configMapKeyRef:
               name: {{ .Values.global.configMapName }}
               key: SPRING_DATA_REDIS_TIMEOUT
         {{- end }}

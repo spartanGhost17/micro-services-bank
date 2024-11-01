@@ -12,26 +12,26 @@ data:
   OTEL_EXPORTER_OTLP_ENDPOINT: {{ .Values.global.otelExporterEndPoint }}
   OTEL_METRICS_EXPORTER: {{ .Values.global.otelMetricsExporter }}
   SPRING_CLOUD_STREAM_KAFKA_BINDER_BROKERS: {{ .Values.global.kafkaBrokerURL }}
-  #RABBITMQ_DEFAULT_USER: {{ .Values.global.rabbitMQDefaultUser }} #"guest"
+  #RABBITMQ_DEFAULT_USER: {{ .Values.global.rabbitMQDefaultUser }}
   SPRING_RABBITMQ_HOST: {{ .Values.global.rabbitMQHost }}
   SPRING_RABBITMQ_USERNAME: {{ .Values.global.rabbitMQUsername }}
   SPRING_RABBITMQ_PASSWORD: {{ .Values.global.rabbitMQPassword }}
   SPRING_RABBITMQ_PORT: {{ .Values.global.rabbitMQPort }}
-  SPRING_DATA_REDIS_CONNECT-TIMEOUT: {{ .Values.global.redisConnectTimeout }} #2s
-  SPRING_DATA_REDIS_HOST: {{ .Values.global.redisHost }} 
+  SPRING_DATA_REDIS_CONNECT-TIMEOUT: {{ .Values.global.redisConnectTimeout }}
+  SPRING_DATA_REDIS_HOST: {{ .Values.global.redisHost }}
   SPRING_DATA_REDIS_PORT: {{ .Values.global.redisPort }}
-  SPRING_DATA_REDIS_TIMEOUT: {{ .Values.global.redisTimeout }} 
+  SPRING_DATA_REDIS_TIMEOUT: {{ .Values.global.redisTimeout }}
 
-  ACCOUNTSDB_NAME: {{ .Values.global.accountsDbName }} # "accountsdb"#
-  LOANSDB_NAME: {{ .Values.global.loansDbName }} # "loansdb"
-  CARDSDB_NAME: {{ .Values.global.cardsDbName }} # "cardsdb"
+  ACCOUNTSDB_NAME: {{ .Values.global.accountsDbName }}
+  LOANSDB_NAME: {{ .Values.global.loansDbName }}
+  CARDSDB_NAME: {{ .Values.global.cardsDbName }}
   ACCOUNTSDB_PASSWORD: {{ .Values.global.accountsDbPassword }}
   LOANSDB_PASSWORD: {{ .Values.global.cardsDbPassword }}
   CARDS_PASSWORD: {{ .Values.global.loansDbPassword }}
-  ACCOUNTS_SPRING_DATASOURCE_URL: {{ .Values.global.accountsDatasourceURL }} # "jdbc:mysql://accountsdb:3306/accountsdb"
-  LOANS_SPRING_DATASOURCE_URL: {{ .Values.global.loansDatasourceURL }} # "jdbc:mysql://loansdb:3306/loansdb"
-  CARDS_SPRING_DATASOURCE_URL: {{ .Values.global.cardsDatasourceURL }} # "jdbc:mysql://cardsdb:3306/cardsdb"
-  SPRING_DATASOURCE_USERNAME: {{ .Values.global.datasourceUsername }} # "root"
-  SPRING_DATASOURCE_PASSWORD: {{ .Values.global.datasourcePassword }} # "root"
+  ACCOUNTS_SPRING_DATASOURCE_URL: {{ .Values.global.accountsDatasourceURL }}
+  LOANS_SPRING_DATASOURCE_URL: {{ .Values.global.loansDatasourceURL }}
+  CARDS_SPRING_DATASOURCE_URL: {{ .Values.global.cardsDatasourceURL }}
+  SPRING_DATASOURCE_USERNAME: {{ .Values.global.datasourceUsername }}
+  SPRING_DATASOURCE_PASSWORD: {{ .Values.global.datasourcePassword }}
   
 {{- end -}}
