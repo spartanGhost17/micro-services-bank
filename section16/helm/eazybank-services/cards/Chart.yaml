@@ -24,12 +24,12 @@ version: 0.1.0
 appVersion: "1.0.0"
 
 dependencies:
-  - name: cardsdb
-    version: 0.1.0
-    repository: file://../cardsdb
-  - name: rabbit
-    version: 0.1.0
-    repository: file://../rabbit
+  #- name: cardsdb
+  #  version: 0.1.0
+  #  repository: file://../cardsdb
+  #- name: rabbit
+  #  version: 0.1.0
+  #  repository: file://../rabbit
   - name: eazybank-common
     version: 0.1.0
     repository: file://../../eazybank-common

@@ -1,12 +1,6 @@
 dependencies:
-- name: loansdb
-  repository: file://../loansdb
-  version: 0.1.0
-- name: rabbit
-  repository: file://../rabbit
-  version: 0.1.0
 - name: eazybank-common
   repository: file://../../eazybank-common
   version: 0.1.0
-digest: sha256:15f1c5c979e58e0e3cb8c6f4a62f19ef81250fd00295e4563245d8558eb4c13c
-generated: "2024-10-31T13:34:06.5113609Z"
+digest: sha256:51d68c2961e193d94a8c718c5c458faf71309a5d09504fd78dd931599b4845a3
+generated: "2024-11-01T13:07:49.5508635Z"
