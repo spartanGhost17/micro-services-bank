@@ -8,8 +8,14 @@ spec:
     app: {{ .Values.appLabel }}
   type: {{ .Values.service.type }}
   ports:
+    {{- range .Values.service.ports }}
+      {{- if .name }}
+    - name: {{ .name }}
+      {{- else }}
     - name: http
+      {{- end }}
       protocol: TCP
-      port: {{ .Values.service.port }}
-      targetPort: {{ .Values.service.targetPort }}
+      port: {{ .port }}
+      targetPort: {{ .targetPort }}
+    {{- end }}
 {{- end -}}

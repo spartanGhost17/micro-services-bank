@@ -37,3 +37,4 @@ rabbit_enabled: false
 rabbit_server: false
 datasource_enabled: false
 app_type: ms
+env_var_enabled: false

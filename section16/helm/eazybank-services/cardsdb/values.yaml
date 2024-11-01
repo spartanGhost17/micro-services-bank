@@ -32,3 +32,4 @@ rabbit_enabled: false
 datasource_enabled: true
 app_type: db
 databaseName: cardsdb
+env_var_enabled: true

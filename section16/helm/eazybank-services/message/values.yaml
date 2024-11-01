@@ -29,3 +29,4 @@ resouceserver_enabled: false
 otel_enabled: false
 kafka_enabled: true
 rabbit_enabled: false
+env_var_enabled: true

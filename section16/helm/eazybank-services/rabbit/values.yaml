@@ -14,7 +14,7 @@ containerPort: 5672
 service:
   type: ClusterIP
   ports:
-    - name: amqp
+    - name: rabbit
       port: 5672
       targetPort: 5672
     - name: management
@@ -40,3 +40,4 @@ rabbit_enabled: false
 rabbit_server: true
 datasource_enabled: false
 app_type: ms
+env_var_enabled: true

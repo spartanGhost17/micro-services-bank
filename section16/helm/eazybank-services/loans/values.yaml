@@ -32,3 +32,4 @@ rabbit_enabled: true
 datasource_enabled: true
 app_type: ms
 databaseName: loansdb
+env_var_enabled: true

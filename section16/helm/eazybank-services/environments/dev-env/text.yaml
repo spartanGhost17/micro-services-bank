@@ -1,4 +1,209 @@
 ---
+# Source: dev-env/templates/configmap.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: eazybankdev-configmap
+data:
+  SPRING_PROFILES_ACTIVE: default
+  SPRING_CONFIG_IMPORT: configserver:http://configserver:8071/
+  EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eurekaserver:8070/eureka/
+  SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK-SET-URI: http://keycloak.default.svc.cluster.local:80/realms/master/protocol/openid-connect/certs
+  JAVA_TOOL_OPTIONS: -javaagent:/app/libs/opentelemetry-javaagent-1.33.5.jar
+  OTEL_EXPORTER_OTLP_ENDPOINT: http://tempo-grafana-tempo-distributor:4317
+  OTEL_METRICS_EXPORTER: none
+  SPRING_CLOUD_STREAM_KAFKA_BINDER_BROKERS: kafka-controller-0.kafka-controller-headless.default.svc.cluster.local:9092
+  #RABBITMQ_DEFAULT_USER:  #"guest"
+  SPRING_RABBITMQ_HOST: rabbit
+  SPRING_RABBITMQ_USERNAME: rabbit
+  SPRING_RABBITMQ_PASSWORD: rabbit
+  SPRING_RABBITMQ_PORT: 5672
+  SPRING_DATA_REDIS_CONNECT-TIMEOUT: 2s #2s
+  SPRING_DATA_REDIS_HOST: redis 
+  SPRING_DATA_REDIS_PORT: 6379
+  SPRING_DATA_REDIS_TIMEOUT: 1s 
+
+  ACCOUNTSDB_NAME: accountsdb # "accountsdb"#
+  LOANSDB_NAME: loansdb # "loansdb"
+  CARDSDB_NAME: cardsdb # "cardsdb"
+  ACCOUNTSDB_PASSWORD: root
+  LOANSDB_PASSWORD: root
+  CARDS_PASSWORD: root
+  ACCOUNTS_SPRING_DATASOURCE_URL: jdbc:mysql://accountsdb:3306/accountsdb # "jdbc:mysql://accountsdb:3306/accountsdb"
+  LOANS_SPRING_DATASOURCE_URL: jdbc:mysql://loansdb:3306/loansdb # "jdbc:mysql://loansdb:3306/loansdb"
+  CARDS_SPRING_DATASOURCE_URL: jdbc:mysql://cardsdb:3306/cardsdb # "jdbc:mysql://cardsdb:3306/cardsdb"
+  SPRING_DATASOURCE_USERNAME: root # "root"
+  SPRING_DATASOURCE_PASSWORD: root # "root"
+---
+# Source: dev-env/charts/accounts/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: accounts
+spec:
+  selector:
+    app: accounts
+  type: ClusterIP
+  ports:
+    - name: accounts
+      protocol: TCP
+      port: 8080
+      targetPort: 8080
+---
+# Source: dev-env/charts/accountsdb/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: accountsdb
+spec:
+  selector:
+    app: accountsdb
+  type: ClusterIP
+  ports:
+    - name: accountsdb
+      protocol: TCP
+      port: 3306
+      targetPort: 3306
+---
+# Source: dev-env/charts/cards/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: cards
+spec:
+  selector:
+    app: cards
+  type: ClusterIP
+  ports:
+    - name: cards
+      protocol: TCP
+      port: 9000
+      targetPort: 9000
+---
+# Source: dev-env/charts/cardsdb/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: cardsdb
+spec:
+  selector:
+    app: cardsdb
+  type: ClusterIP
+  ports:
+    - name: cardsdb
+      protocol: TCP
+      port: 3306
+      targetPort: 3306
+---
+# Source: dev-env/charts/configserver/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: configserver
+spec:
+  selector:
+    app: configserver
+  type: ClusterIP
+  ports:
+    - name: configserver
+      protocol: TCP
+      port: 8071
+      targetPort: 8071
+---
+# Source: dev-env/charts/eurekaserver/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: eurekaserver
+spec:
+  selector:
+    app: eurekaserver
+  type: ClusterIP
+  ports:
+    - name: eurekaserver
+      protocol: TCP
+      port: 8070
+      targetPort: 8070
+---
+# Source: dev-env/charts/gatewayserver/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: gatewayserver
+spec:
+  selector:
+    app: gatewayserver
+  type: LoadBalancer
+  ports:
+    - name: gatewayserver
+      protocol: TCP
+      port: 8072
+      targetPort: 8072
+---
+# Source: dev-env/charts/loans/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: loans
+spec:
+  selector:
+    app: loans
+  type: ClusterIP
+  ports:
+    - name: loans
+      protocol: TCP
+      port: 8090
+      targetPort: 8090
+---
+# Source: dev-env/charts/loansdb/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: loansdb
+spec:
+  selector:
+    app: loansdb
+  type: ClusterIP
+  ports:
+    - name: loansdb
+      protocol: TCP
+      port: 3306
+      targetPort: 3306
+---
+# Source: dev-env/charts/message/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: message
+spec:
+  selector:
+    app: message
+  type: ClusterIP
+  ports:
+    - name: message
+      protocol: TCP
+      port: 9010
+      targetPort: 9010
+---
+# Source: dev-env/charts/rabbit/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: rabbit
+spec:
+  selector:
+    app: rabbit
+  type: ClusterIP
+  ports:
+    - name: rabbit
+      protocol: TCP
+      port: 5672
+      targetPort: 5672
+    - name: management
+      protocol: TCP
+      port: 15672
+      targetPort: 15672
+---
 # Source: dev-env/charts/redis/templates/service.yaml
 apiVersion: v1
 kind: Service
@@ -9,10 +214,241 @@ spec:
     app: redis
   type: ClusterIP
   ports:
-    - name: http
+    - name: redis
       protocol: TCP
-      port: 
-      targetPort: 
+      port: 6379
+      targetPort: 6379
+---
+# Source: dev-env/charts/accounts/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: accounts-deployment
+  labels:
+    app: accounts
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: accounts
+  template:
+    metadata:
+      labels:
+        app: accounts
+    spec:
+      containers:
+      - name: accounts
+        image: "spartanghost17/accounts:s14"
+        ports:
+          - containerPort: 8080
+            name: accounts
+            protocol: TCP
+        env:
+        - name: SPRING_APPLICATION_NAME
+          value: accounts
+        - name: SPRING_PROFILES_ACTIVE
+          valueFrom: 
+            configMapKeyRef:
+              name: eazybankdev-configmap
+              key: SPRING_PROFILES_ACTIVE
+        - name: SPRING_CONFIG_IMPORT
+          valueFrom: 
+            configMapKeyRef:
+              name: eazybankdev-configmap
+              key: SPRING_CONFIG_IMPORT
+        - name: EUREKA_CLIENT_SERVICEURL_DEFAULTZONE
+          valueFrom: 
+            configMapKeyRef:
+              name: eazybankdev-configmap
+              key: EUREKA_CLIENT_SERVICEURL_DEFAULTZONE
+        - name: JAVA_TOOL_OPTIONS
+          valueFrom: 
+            configMapKeyRef:
+              name: eazybankdev-configmap
+              key: JAVA_TOOL_OPTIONS
+        - name: OTEL_EXPORTER_OTLP_ENDPOINT
+          valueFrom: 
+            configMapKeyRef:
+              name: eazybankdev-configmap
+              key: OTEL_EXPORTER_OTLP_ENDPOINT
+        - name: OTEL_METRICS_EXPORTER
+          valueFrom: 
+            configMapKeyRef:
+              name: eazybankdev-configmap
+              key: OTEL_METRICS_EXPORTER
+        - name: OTEL_SERVICE_NAME
+          value: accounts
+        - name: SPRING_CLOUD_STREAM_KAFKA_BINDER_BROKERS
+          valueFrom: 
+            configMapKeyRef:
+              name: eazybankdev-configmap
+              key: SPRING_CLOUD_STREAM_KAFKA_BINDER_BROKERS
+        - name: SPRING_RABBITMQ_HOST
+          valueFrom:
+            configMapkeyRef:
+              name: eazybankdev-configmap
+              key: SPRING_RABBITMQ_HOST
+        - name: SPRING_RABBITMQ_USERNAME
+          valueFrom:
+            configMapkeyRef:
+              name: eazybankdev-configmap
+              key: SPRING_RABBITMQ_USERNAME
+        - name: SPRING_RABBITMQ_PASSWORD
+          valueFrom:
+            configMapkeyRef:
+              name: eazybankdev-configmap
+              key: SPRING_RABBITMQ_PASSWORD
+        - name: SPRING_RABBITMQ_PORT
+          valueFrom:
+            configMapkeyRef:
+              name: eazybankdev-configmap
+              key: SPRING_RABBITMQ_PORT
+        - name: SPRING_DATASOURCE_USERNAME
+          valueFrom:
+            configMapKeyRef:
+              name: eazybankdev-configmap
+              key: SPRING_DATASOURCE_USERNAME
+        - name: SPRING_DATASOURCE_PASSWORD
+          valueFrom:
+            configMapKeyRef:
+              name: eazybankdev-configmap
+              key: SPRING_DATASOURCE_PASSWORD
+        - name: SPRING_DATASOURCE_URL
+          valueFrom:
+            configMapKeyRef:
+              name: eazybankdev-configmap
+              key: ACCOUNTS_SPRING_DATASOURCE_URL
+---
+# Source: dev-env/charts/accountsdb/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: accountsdb-deployment
+  labels:
+    app: accountsdb
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: accountsdb
+  template:
+    metadata:
+      labels:
+        app: accountsdb
+    spec:
+      containers:
+      - name: accountsdb
+        image: "mysql:latest"
+        ports:
+          - containerPort: 3306
+            name: accountsdb
+            protocol: TCP
+        env:
+        - name: MYSQL_DATABASE
+          valueFrom:
+            configMapKeyRef:
+              name: eazybankdev-configmap
+              key: ACCOUNTSDB_NAME
+        - name: MYSQL_ROOT_PASSWORD
+          valueFrom:
+            configMapKeyRef:
+              name: eazybankdev-configmap
+              key: ACCOUNTSDB_PASSWORD
+---
+# Source: dev-env/charts/cards/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cards-deployment
+  labels:
+    app: cards
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cards
+  template:
+    metadata:
+      labels:
+        app: cards
+    spec:
+      containers:
+      - name: cards
+        image: "spartanghost17/cards:s14"
+        ports:
+          - containerPort: 9000
+            name: cards
+            protocol: TCP
+        env:
+        - name: SPRING_APPLICATION_NAME
+          value: cards
+        - name: SPRING_PROFILES_ACTIVE
+          valueFrom: 
+            configMapKeyRef:
+              name: eazybankdev-configmap
+              key: SPRING_PROFILES_ACTIVE
+        - name: SPRING_CONFIG_IMPORT
+          valueFrom: 
+            configMapKeyRef:
+              name: eazybankdev-configmap
+              key: SPRING_CONFIG_IMPORT
+        - name: EUREKA_CLIENT_SERVICEURL_DEFAULTZONE
+          valueFrom: 
+            configMapKeyRef:
+              name: eazybankdev-configmap
+              key: EUREKA_CLIENT_SERVICEURL_DEFAULTZONE
+        - name: JAVA_TOOL_OPTIONS
+          valueFrom: 
+            configMapKeyRef:
+              name: eazybankdev-configmap
+              key: JAVA_TOOL_OPTIONS
+        - name: OTEL_EXPORTER_OTLP_ENDPOINT
+          valueFrom: 
+            configMapKeyRef:
+              name: eazybankdev-configmap
+              key: OTEL_EXPORTER_OTLP_ENDPOINT
+        - name: OTEL_METRICS_EXPORTER
+          valueFrom: 
+            configMapKeyRef:
+              name: eazybankdev-configmap
+              key: OTEL_METRICS_EXPORTER
+        - name: OTEL_SERVICE_NAME
+          value: cards
+        - name: SPRING_RABBITMQ_HOST
+          valueFrom:
+            configMapkeyRef:
+              name: eazybankdev-configmap
+              key: SPRING_RABBITMQ_HOST
+        - name: SPRING_RABBITMQ_USERNAME
+          valueFrom:
+            configMapkeyRef:
+              name: eazybankdev-configmap
+              key: SPRING_RABBITMQ_USERNAME
+        - name: SPRING_RABBITMQ_PASSWORD
+          valueFrom:
+            configMapkeyRef:
+              name: eazybankdev-configmap
+              key: SPRING_RABBITMQ_PASSWORD
+        - name: SPRING_RABBITMQ_PORT
+          valueFrom:
+            configMapkeyRef:
+              name: eazybankdev-configmap
+              key: SPRING_RABBITMQ_PORT
+        - name: SPRING_DATASOURCE_USERNAME
+          valueFrom:
+            configMapKeyRef:
+              name: eazybankdev-configmap
+              key: SPRING_DATASOURCE_USERNAME
+        - name: SPRING_DATASOURCE_PASSWORD
+          valueFrom:
+            configMapKeyRef:
+              name: eazybankdev-configmap
+              key: SPRING_DATASOURCE_PASSWORD
+        - name: SPRING_DATASOURCE_URL
+          valueFrom:
+            configMapKeyRef:
+              name: eazybankdev-configmap
+              key: CARDS_SPRING_DATASOURCE_URL
 ---
 # Source: dev-env/charts/cardsdb/templates/deployment.yaml
 apiVersion: apps/v1
@@ -35,19 +471,85 @@ spec:
       - name: cardsdb
         image: "mysql:latest"
         ports:
+          - containerPort: 3306
+            name: cardsdb
+            protocol: TCP
         env:
-          # add data source environment variables
-          # Add environment variables specific to accountsdb and ms-service
-          - name: MYSQL_DATABASE
-            valueFrom:
-              configMapKeyRef:
-                name: eazybankdev-configmap
-                key: CARDSDB_NAME
-          - name: MYSQL_ROOT_PASSWORD
-            valueFrom:
-              configMapKeyRef:
-                name: eazybankdev-configmap
-                key: CARDSDB_PASSWORD
+        - name: MYSQL_DATABASE
+          valueFrom:
+            configMapKeyRef:
+              name: eazybankdev-configmap
+              key: CARDSDB_NAME
+        - name: MYSQL_ROOT_PASSWORD
+          valueFrom:
+            configMapKeyRef:
+              name: eazybankdev-configmap
+              key: CARDSDB_PASSWORD
+---
+# Source: dev-env/charts/configserver/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: configserver-deployment
+  labels:
+    app: configserver
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: configserver
+  template:
+    metadata:
+      labels:
+        app: configserver
+    spec:
+      containers:
+      - name: configserver
+        image: "spartanghost17/configserver:s14"
+        ports:
+          - containerPort: 8071
+            name: configserver
+            protocol: TCP
+        env:
+        - name: SPRING_APPLICATION_NAME
+          value: configserver
+        - name: JAVA_TOOL_OPTIONS
+          valueFrom: 
+            configMapKeyRef:
+              name: eazybankdev-configmap
+              key: JAVA_TOOL_OPTIONS
+        - name: OTEL_EXPORTER_OTLP_ENDPOINT
+          valueFrom: 
+            configMapKeyRef:
+              name: eazybankdev-configmap
+              key: OTEL_EXPORTER_OTLP_ENDPOINT
+        - name: OTEL_METRICS_EXPORTER
+          valueFrom: 
+            configMapKeyRef:
+              name: eazybankdev-configmap
+              key: OTEL_METRICS_EXPORTER
+        - name: OTEL_SERVICE_NAME
+          value: configserver
+        - name: SPRING_RABBITMQ_HOST
+          valueFrom:
+            configMapkeyRef:
+              name: eazybankdev-configmap
+              key: SPRING_RABBITMQ_HOST
+        - name: SPRING_RABBITMQ_USERNAME
+          valueFrom:
+            configMapkeyRef:
+              name: eazybankdev-configmap
+              key: SPRING_RABBITMQ_USERNAME
+        - name: SPRING_RABBITMQ_PASSWORD
+          valueFrom:
+            configMapkeyRef:
+              name: eazybankdev-configmap
+              key: SPRING_RABBITMQ_PASSWORD
+        - name: SPRING_RABBITMQ_PORT
+          valueFrom:
+            configMapkeyRef:
+              name: eazybankdev-configmap
+              key: SPRING_RABBITMQ_PORT
 ---
 # Source: dev-env/charts/eurekaserver/templates/deployment.yaml
 apiVersion: apps/v1
@@ -70,6 +572,9 @@ spec:
       - name: eurekaserver
         image: "spartanghost17/eurekaserver:s14"
         ports:
+          - containerPort: 8070
+            name: eurekaserver
+            protocol: TCP
         env:
         - name: SPRING_APPLICATION_NAME
           value: eurekaserver
@@ -99,7 +604,7 @@ spec:
           valueFrom:
             configMapkeyRef:
               name: eazybankdev-configmap
-              key: SPRING_RABBITMQ_HOST # rabbit
+              key: SPRING_RABBITMQ_HOST
         - name: SPRING_RABBITMQ_USERNAME
           valueFrom:
             configMapkeyRef:
@@ -115,242 +620,6 @@ spec:
             configMapkeyRef:
               name: eazybankdev-configmap
               key: SPRING_RABBITMQ_PORT
----
-# Source: dev-env/charts/message/templates/service.yaml
-apiVersion: v1
-kind: Service
-metadata:
-  name: message
-spec:
-  selector:
-    app: message
-  type: ClusterIP
-  ports:
-    - name: http
-      protocol: TCP
-      port: 
-      targetPort: 
----
-# Source: dev-env/charts/message/templates/deployment.yaml
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: message-deployment
-  labels:
-    app: message
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: message
-  template:
-    metadata:
-      labels:
-        app: message
-    spec:
-      containers:
-      - name: message
-        image: "spartanghost17/message:s14"
-        ports:
-        env:
-        - name: SPRING_APPLICATION_NAME
-          value: message
-        - name: SPRING_CLOUD_STREAM_KAFKA_BINDER_BROKERS
-          valueFrom: 
-            configMapKeyRef:
-              name: eazybankdev-configmap
-              key: SPRING_CLOUD_STREAM_KAFKA_BINDER_BROKERS
----
-# Source: dev-env/charts/accounts/templates/service.yaml
-apiVersion: v1
-kind: Service
-metadata:
-  name: accounts
-spec:
-  selector:
-    app: accounts
-  type: ClusterIP
-  ports:
-    - name: http
-      protocol: TCP
-      port: 
-      targetPort: 
----
-# Source: dev-env/charts/rabbit/templates/service.yaml
-apiVersion: v1
-kind: Service
-metadata:
-  name: rabbit
-spec:
-  selector:
-    app: rabbit
-  type: ClusterIP
-  ports:
-    - name: http
-      protocol: TCP
-      port: 
-      targetPort: 
----
-# Source: dev-env/charts/accountsdb/templates/service.yaml
-apiVersion: v1
-kind: Service
-metadata:
-  name: accountsdb
-spec:
-  selector:
-    app: accountsdb
-  type: ClusterIP
-  ports:
-    - name: http
-      protocol: TCP
-      port: 
-      targetPort: 
----
-# Source: dev-env/charts/cardsdb/templates/service.yaml
-apiVersion: v1
-kind: Service
-metadata:
-  name: cardsdb
-spec:
-  selector:
-    app: cardsdb
-  type: ClusterIP
-  ports:
-    - name: http
-      protocol: TCP
-      port: 
-      targetPort: 
----
-# Source: dev-env/charts/loansdb/templates/service.yaml
-apiVersion: v1
-kind: Service
-metadata:
-  name: loansdb
-spec:
-  selector:
-    app: loansdb
-  type: ClusterIP
-  ports:
-    - name: http
-      protocol: TCP
-      port: 
-      targetPort: 
----
-# Source: dev-env/charts/rabbit/templates/deployment.yaml
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: rabbit-deployment
-  labels:
-    app: rabbit
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: rabbit
-  template:
-    metadata:
-      labels:
-        app: rabbit
-    spec:
-      containers:
-      - name: rabbit
-        image: "rabbitmq:3.13-management-alpine"
-        ports:
-        env:
-        - name: RABBITMQ_DEFAULT_USER
-          valueFrom:
-            configMapkeyRef:
-              name: eazybankdev-configmap
-              key: SPRING_RABBITMQ_USERNAME
-        - name: RABBITMQ_DEFAULT_PASS
-          valueFrom:
-            configMapkeyRef:
-              name: eazybankdev-configmap
-              key: SPRING_RABBITMQ_PASSWORD
----
-# Source: dev-env/charts/loans/templates/service.yaml
-apiVersion: v1
-kind: Service
-metadata:
-  name: loans
-spec:
-  selector:
-    app: loans
-  type: ClusterIP
-  ports:
-    - name: http
-      protocol: TCP
-      port: 
-      targetPort: 
----
-# Source: dev-env/charts/eurekaserver/templates/service.yaml
-apiVersion: v1
-kind: Service
-metadata:
-  name: eurekaserver
-spec:
-  selector:
-    app: eurekaserver
-  type: ClusterIP
-  ports:
-    - name: http
-      protocol: TCP
-      port: 
-      targetPort: 
----
-# Source: dev-env/charts/cards/templates/service.yaml
-apiVersion: v1
-kind: Service
-metadata:
-  name: cards
-spec:
-  selector:
-    app: cards
-  type: ClusterIP
-  ports:
-    - name: http
-      protocol: TCP
-      port: 
-      targetPort: 
----
-# Source: dev-env/charts/redis/templates/deployment.yaml
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: redis-deployment
-  labels:
-    app: redis
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: redis
-  template:
-    metadata:
-      labels:
-        app: redis
-    spec:
-      containers:
-      - name: redis
-        image: "redis:latest"
-        ports:
-        env:
----
-# Source: dev-env/charts/gatewayserver/templates/service.yaml
-apiVersion: v1
-kind: Service
-metadata:
-  name: gatewayserver
-spec:
-  selector:
-    app: gatewayserver
-  type: LoadBalancer
-  ports:
-    - name: http
-      protocol: TCP
-      port: 
-      targetPort: 
 ---
 # Source: dev-env/charts/gatewayserver/templates/deployment.yaml
 apiVersion: apps/v1
@@ -373,6 +642,9 @@ spec:
       - name: gatewayserver
         image: "spartanghost17/gatewayserver:s14"
         ports:
+          - containerPort: 8072
+            name: gatewayserver
+            protocol: TCP
         env:
         - name: SPRING_APPLICATION_NAME
           value: gatewayserver
@@ -417,7 +689,7 @@ spec:
           valueFrom:
             configMapkeyRef:
               name: eazybankdev-configmap
-              key: SPRING_RABBITMQ_HOST # rabbit
+              key: SPRING_RABBITMQ_HOST
         - name: SPRING_RABBITMQ_USERNAME
           valueFrom:
             configMapkeyRef:
@@ -433,382 +705,6 @@ spec:
             configMapkeyRef:
               name: eazybankdev-configmap
               key: SPRING_RABBITMQ_PORT
----
-# Source: dev-env/charts/configserver/templates/deployment.yaml
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: configserver-deployment
-  labels:
-    app: configserver
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: configserver
-  template:
-    metadata:
-      labels:
-        app: configserver
-    spec:
-      containers:
-      - name: configserver
-        image: "spartanghost17/configserver:s14"
-        ports:
-        env:
-        - name: SPRING_APPLICATION_NAME
-          value: configserver
-        - name: JAVA_TOOL_OPTIONS
-          valueFrom: 
-            configMapKeyRef:
-              name: eazybankdev-configmap
-              key: JAVA_TOOL_OPTIONS
-        - name: OTEL_EXPORTER_OTLP_ENDPOINT
-          valueFrom: 
-            configMapKeyRef:
-              name: eazybankdev-configmap
-              key: OTEL_EXPORTER_OTLP_ENDPOINT
-        - name: OTEL_METRICS_EXPORTER
-          valueFrom: 
-            configMapKeyRef:
-              name: eazybankdev-configmap
-              key: OTEL_METRICS_EXPORTER
-        - name: OTEL_SERVICE_NAME
-          value: configserver
-        - name: SPRING_RABBITMQ_HOST
-          valueFrom:
-            configMapkeyRef:
-              name: eazybankdev-configmap
-              key: SPRING_RABBITMQ_HOST # rabbit
-        - name: SPRING_RABBITMQ_USERNAME
-          valueFrom:
-            configMapkeyRef:
-              name: eazybankdev-configmap
-              key: SPRING_RABBITMQ_USERNAME
-        - name: SPRING_RABBITMQ_PASSWORD
-          valueFrom:
-            configMapkeyRef:
-              name: eazybankdev-configmap
-              key: SPRING_RABBITMQ_PASSWORD
-        - name: SPRING_RABBITMQ_PORT
-          valueFrom:
-            configMapkeyRef:
-              name: eazybankdev-configmap
-              key: SPRING_RABBITMQ_PORT
----
-# Source: dev-env/templates/configmap.yaml
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: eazybankdev-configmap
-data:
-  SPRING_PROFILES_ACTIVE: default
-  SPRING_CONFIG_IMPORT: configserver:http://configserver:8071/
-  EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eurekaserver:8070/eureka/
-  SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK-SET-URI: http://keycloak.default.svc.cluster.local:80/realms/master/protocol/openid-connect/certs
-  JAVA_TOOL_OPTIONS: -javaagent:/app/libs/opentelemetry-javaagent-1.33.5.jar
-  OTEL_EXPORTER_OTLP_ENDPOINT: http://tempo-grafana-tempo-distributor:4317
-  OTEL_METRICS_EXPORTER: none
-  SPRING_CLOUD_STREAM_KAFKA_BINDER_BROKERS: kafka-controller-0.kafka-controller-headless.default.svc.cluster.local:9092
-  #RABBITMQ_DEFAULT_USER:  #"guest"
-  SPRING_RABBITMQ_HOST: rabbit
-  SPRING_RABBITMQ_USERNAME: rabbit
-  SPRING_RABBITMQ_PASSWORD: rabbit
-  SPRING_RABBITMQ_PORT: 5672
-  SPRING_DATA_REDIS_CONNECT-TIMEOUT: 2s #2s
-  SPRING_DATA_REDIS_HOST: redis 
-  SPRING_DATA_REDIS_PORT: 6379
-  SPRING_DATA_REDIS_TIMEOUT: 1s 
-
-  ACCOUNTSDB_NAME: accountsdb # "accountsdb"#
-  LOANSDB_NAME: loansdb # "loansdb"
-  CARDSDB_NAME: cardsdb # "cardsdb"
-  ACCOUNTSDB_PASSWORD: root
-  LOANSDB_PASSWORD: root
-  CARDS_PASSWORD: root
-  ACCOUNTS_SPRING_DATASOURCE_URL: jdbc:mysql://accountsdb:3306/accountsdb # "jdbc:mysql://accountsdb:3306/accountsdb"
-  LOANS_SPRING_DATASOURCE_URL: jdbc:mysql://loansdb:3306/loansdb # "jdbc:mysql://loansdb:3306/loansdb"
-  CARDS_SPRING_DATASOURCE_URL: jdbc:mysql://cardsdb:3306/cardsdb # "jdbc:mysql://cardsdb:3306/cardsdb"
-  SPRING_DATASOURCE_USERNAME: root # "root"
-  SPRING_DATASOURCE_PASSWORD: root # "root"
----
-# Source: dev-env/charts/cards/templates/deployment.yaml
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: cards-deployment
-  labels:
-    app: cards
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: cards
-  template:
-    metadata:
-      labels:
-        app: cards
-    spec:
-      containers:
-      - name: cards
-        image: "spartanghost17/cards:s14"
-        ports:
-        env:
-        - name: SPRING_APPLICATION_NAME
-          value: cards
-        - name: SPRING_PROFILES_ACTIVE
-          valueFrom: 
-            configMapKeyRef:
-              name: eazybankdev-configmap
-              key: SPRING_PROFILES_ACTIVE
-        - name: SPRING_CONFIG_IMPORT
-          valueFrom: 
-            configMapKeyRef:
-              name: eazybankdev-configmap
-              key: SPRING_CONFIG_IMPORT
-        - name: EUREKA_CLIENT_SERVICEURL_DEFAULTZONE
-          valueFrom: 
-            configMapKeyRef:
-              name: eazybankdev-configmap
-              key: EUREKA_CLIENT_SERVICEURL_DEFAULTZONE
-        - name: JAVA_TOOL_OPTIONS
-          valueFrom: 
-            configMapKeyRef:
-              name: eazybankdev-configmap
-              key: JAVA_TOOL_OPTIONS
-        - name: OTEL_EXPORTER_OTLP_ENDPOINT
-          valueFrom: 
-            configMapKeyRef:
-              name: eazybankdev-configmap
-              key: OTEL_EXPORTER_OTLP_ENDPOINT
-        - name: OTEL_METRICS_EXPORTER
-          valueFrom: 
-            configMapKeyRef:
-              name: eazybankdev-configmap
-              key: OTEL_METRICS_EXPORTER
-        - name: OTEL_SERVICE_NAME
-          value: cards
-        - name: SPRING_RABBITMQ_HOST
-          valueFrom:
-            configMapkeyRef:
-              name: eazybankdev-configmap
-              key: SPRING_RABBITMQ_HOST # rabbit
-        - name: SPRING_RABBITMQ_USERNAME
-          valueFrom:
-            configMapkeyRef:
-              name: eazybankdev-configmap
-              key: SPRING_RABBITMQ_USERNAME
-        - name: SPRING_RABBITMQ_PASSWORD
-          valueFrom:
-            configMapkeyRef:
-              name: eazybankdev-configmap
-              key: SPRING_RABBITMQ_PASSWORD
-        - name: SPRING_RABBITMQ_PORT
-          valueFrom:
-            configMapkeyRef:
-              name: eazybankdev-configmap
-              key: SPRING_RABBITMQ_PORT
-          # add data source environment variables
-          # Add environment variables specific to accountsdb and ms-service
-          - name: SPRING_DATASOURCE_USERNAME
-            valueFrom:
-              configMapKeyRef:
-                name: eazybankdev-configmap
-                key: SPRING_DATASOURCE_USERNAME
-          - name: SPRING_DATASOURCE_PASSWORD
-            valueFrom:
-              configMapKeyRef:
-                name: eazybankdev-configmap
-                key: SPRING_DATASOURCE_PASSWORD
-          - name: SPRING_DATASOURCE_URL
-            valueFrom:
-              configMapKeyRef:
-                name: eazybankdev-configmap
-                key: CARDS_SPRING_DATASOURCE_URL
----
-# Source: dev-env/charts/configserver/templates/service.yaml
-apiVersion: v1
-kind: Service
-metadata:
-  name: configserver
-spec:
-  selector:
-    app: configserver
-  type: ClusterIP
-  ports:
-    - name: http
-      protocol: TCP
-      port: 
-      targetPort: 
----
-# Source: dev-env/charts/loansdb/templates/deployment.yaml
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: loansdb-deployment
-  labels:
-    app: loansdb
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: loansdb
-  template:
-    metadata:
-      labels:
-        app: loansdb
-    spec:
-      containers:
-      - name: loansdb
-        image: "mysql:latest"
-        ports:
-        env:
-          # add data source environment variables
-          # Add environment variables specific to accountsdb and ms-service
-          - name: MYSQL_DATABASE
-            valueFrom:
-              configMapKeyRef:
-                name: eazybankdev-configmap
-                key: LOANSDB_NAME
-          - name: MYSQL_ROOT_PASSWORD
-            valueFrom:
-              configMapKeyRef:
-                name: eazybankdev-configmap
-                key: LOANSDB_PASSWORD
----
-# Source: dev-env/charts/accounts/templates/deployment.yaml
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: accounts-deployment
-  labels:
-    app: accounts
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: accounts
-  template:
-    metadata:
-      labels:
-        app: accounts
-    spec:
-      containers:
-      - name: accounts
-        image: "spartanghost17/accounts:s14"
-        ports:
-        env:
-        - name: SPRING_APPLICATION_NAME
-          value: accounts
-        - name: SPRING_PROFILES_ACTIVE
-          valueFrom: 
-            configMapKeyRef:
-              name: eazybankdev-configmap
-              key: SPRING_PROFILES_ACTIVE
-        - name: SPRING_CONFIG_IMPORT
-          valueFrom: 
-            configMapKeyRef:
-              name: eazybankdev-configmap
-              key: SPRING_CONFIG_IMPORT
-        - name: EUREKA_CLIENT_SERVICEURL_DEFAULTZONE
-          valueFrom: 
-            configMapKeyRef:
-              name: eazybankdev-configmap
-              key: EUREKA_CLIENT_SERVICEURL_DEFAULTZONE
-        - name: JAVA_TOOL_OPTIONS
-          valueFrom: 
-            configMapKeyRef:
-              name: eazybankdev-configmap
-              key: JAVA_TOOL_OPTIONS
-        - name: OTEL_EXPORTER_OTLP_ENDPOINT
-          valueFrom: 
-            configMapKeyRef:
-              name: eazybankdev-configmap
-              key: OTEL_EXPORTER_OTLP_ENDPOINT
-        - name: OTEL_METRICS_EXPORTER
-          valueFrom: 
-            configMapKeyRef:
-              name: eazybankdev-configmap
-              key: OTEL_METRICS_EXPORTER
-        - name: OTEL_SERVICE_NAME
-          value: accounts
-        - name: SPRING_CLOUD_STREAM_KAFKA_BINDER_BROKERS
-          valueFrom: 
-            configMapKeyRef:
-              name: eazybankdev-configmap
-              key: SPRING_CLOUD_STREAM_KAFKA_BINDER_BROKERS
-        - name: SPRING_RABBITMQ_HOST
-          valueFrom:
-            configMapkeyRef:
-              name: eazybankdev-configmap
-              key: SPRING_RABBITMQ_HOST # rabbit
-        - name: SPRING_RABBITMQ_USERNAME
-          valueFrom:
-            configMapkeyRef:
-              name: eazybankdev-configmap
-              key: SPRING_RABBITMQ_USERNAME
-        - name: SPRING_RABBITMQ_PASSWORD
-          valueFrom:
-            configMapkeyRef:
-              name: eazybankdev-configmap
-              key: SPRING_RABBITMQ_PASSWORD
-        - name: SPRING_RABBITMQ_PORT
-          valueFrom:
-            configMapkeyRef:
-              name: eazybankdev-configmap
-              key: SPRING_RABBITMQ_PORT
-          # add data source environment variables
-          # Add environment variables specific to accountsdb and ms-service
-          - name: SPRING_DATASOURCE_USERNAME
-            valueFrom:
-              configMapKeyRef:
-                name: eazybankdev-configmap
-                key: SPRING_DATASOURCE_USERNAME
-          - name: SPRING_DATASOURCE_PASSWORD
-            valueFrom:
-              configMapKeyRef:
-                name: eazybankdev-configmap
-                key: SPRING_DATASOURCE_PASSWORD          
-          - name: SPRING_DATASOURCE_URL
-            valueFrom:
-              configMapKeyRef:
-                name: eazybankdev-configmap
-                key: ACCOUNTS_SPRING_DATASOURCE_URL
----
-# Source: dev-env/charts/accountsdb/templates/deployment.yaml
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: accountsdb-deployment
-  labels:
-    app: accountsdb
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: accountsdb
-  template:
-    metadata:
-      labels:
-        app: accountsdb
-    spec:
-      containers:
-      - name: accountsdb
-        image: "mysql:latest"
-        ports:
-        env:
-          # add data source environment variables
-          # Add environment variables specific to accountsdb and ms-service
-          - name: MYSQL_DATABASE
-            valueFrom:
-              configMapKeyRef:
-                name: eazybankdev-configmap
-                key: ACCOUNTSDB_NAME
-          - name: MYSQL_ROOT_PASSWORD
-            valueFrom:
-              configMapKeyRef:
-                name: eazybankdev-configmap
-                key: ACCOUNTSDB_PASSWORD
 ---
 # Source: dev-env/charts/loans/templates/deployment.yaml
 apiVersion: apps/v1
@@ -831,6 +727,9 @@ spec:
       - name: loans
         image: "spartanghost17/loans:s14"
         ports:
+          - containerPort: 8090
+            name: loans
+            protocol: TCP
         env:
         - name: SPRING_APPLICATION_NAME
           value: loans
@@ -870,7 +769,7 @@ spec:
           valueFrom:
             configMapkeyRef:
               name: eazybankdev-configmap
-              key: SPRING_RABBITMQ_HOST # rabbit
+              key: SPRING_RABBITMQ_HOST
         - name: SPRING_RABBITMQ_USERNAME
           valueFrom:
             configMapkeyRef:
@@ -886,20 +785,151 @@ spec:
             configMapkeyRef:
               name: eazybankdev-configmap
               key: SPRING_RABBITMQ_PORT
-          # add data source environment variables
-          # Add environment variables specific to accountsdb and ms-service
-          - name: SPRING_DATASOURCE_USERNAME
-            valueFrom:
-              configMapKeyRef:
-                name: eazybankdev-configmap
-                key: SPRING_DATASOURCE_USERNAME
-          - name: SPRING_DATASOURCE_PASSWORD
-            valueFrom:
-              configMapKeyRef:
-                name: eazybankdev-configmap
-                key: SPRING_DATASOURCE_PASSWORD
-          - name: SPRING_DATASOURCE_URL
-            valueFrom:
-              configMapKeyRef:
-                name: eazybankdev-configmap
-                key: LOANS_SPRING_DATASOURCE_URL
+        - name: SPRING_DATASOURCE_USERNAME
+          valueFrom:
+            configMapKeyRef:
+              name: eazybankdev-configmap
+              key: SPRING_DATASOURCE_USERNAME
+        - name: SPRING_DATASOURCE_PASSWORD
+          valueFrom:
+            configMapKeyRef:
+              name: eazybankdev-configmap
+              key: SPRING_DATASOURCE_PASSWORD
+        - name: SPRING_DATASOURCE_URL
+          valueFrom:
+            configMapKeyRef:
+              name: eazybankdev-configmap
+              key: LOANS_SPRING_DATASOURCE_URL
+---
+# Source: dev-env/charts/loansdb/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: loansdb-deployment
+  labels:
+    app: loansdb
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: loansdb
+  template:
+    metadata:
+      labels:
+        app: loansdb
+    spec:
+      containers:
+      - name: loansdb
+        image: "mysql:latest"
+        ports:
+          - containerPort: 3306
+            name: loansdb
+            protocol: TCP
+        env:
+        - name: MYSQL_DATABASE
+          valueFrom:
+            configMapKeyRef:
+              name: eazybankdev-configmap
+              key: LOANSDB_NAME
+        - name: MYSQL_ROOT_PASSWORD
+          valueFrom:
+            configMapKeyRef:
+              name: eazybankdev-configmap
+              key: LOANSDB_PASSWORD
+---
+# Source: dev-env/charts/message/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: message-deployment
+  labels:
+    app: message
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: message
+  template:
+    metadata:
+      labels:
+        app: message
+    spec:
+      containers:
+      - name: message
+        image: "spartanghost17/message:s14"
+        ports:
+          - containerPort: 9010
+            name: message
+            protocol: TCP
+        env:
+        - name: SPRING_APPLICATION_NAME
+          value: message
+        - name: SPRING_CLOUD_STREAM_KAFKA_BINDER_BROKERS
+          valueFrom: 
+            configMapKeyRef:
+              name: eazybankdev-configmap
+              key: SPRING_CLOUD_STREAM_KAFKA_BINDER_BROKERS
+---
+# Source: dev-env/charts/rabbit/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rabbit-deployment
+  labels:
+    app: rabbit
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: rabbit
+  template:
+    metadata:
+      labels:
+        app: rabbit
+    spec:
+      containers:
+      - name: rabbit
+        image: "rabbitmq:3.13-management-alpine"
+        ports:
+          - containerPort: 5672
+            name: rabbit
+            protocol: TCP
+          - containerPort: 15672
+            name: management
+            protocol: TCP
+        env:
+        - name: RABBITMQ_DEFAULT_USER
+          valueFrom:
+            configMapkeyRef:
+              name: eazybankdev-configmap
+              key: SPRING_RABBITMQ_USERNAME
+        - name: RABBITMQ_DEFAULT_PASS
+          valueFrom:
+            configMapkeyRef:
+              name: eazybankdev-configmap
+              key: SPRING_RABBITMQ_PASSWORD
+---
+# Source: dev-env/charts/redis/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis-deployment
+  labels:
+    app: redis
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: redis
+  template:
+    metadata:
+      labels:
+        app: redis
+    spec:
+      containers:
+      - name: redis
+        image: "redis:latest"
+        ports:
+          - containerPort: 6379
+            name: redis
+            protocol: TCP

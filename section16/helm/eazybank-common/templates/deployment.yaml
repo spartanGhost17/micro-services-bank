@@ -19,17 +19,21 @@ spec:
       - name: {{ .Values.appLabel }}
         image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
         ports:
-          {{- range .Values.ports }}
+        {{- if .Values.service.ports }}
+          {{- range .Values.service.ports }}
+          - containerPort: {{ .targetPort }}
             {{- if .name }}
-            - containerPort: {{ .targetPort }}
-              name: {{ .name }}
-              protocol: TCP
-            {{- else }}
-            - containerPort: {{ .targetPort }}
-              protocol: TCP
+            name: {{ .name }}
             {{- end }}
+            protocol: TCP
           {{- end }}
+        {{- else }}
+          - containerPort: {{ .Values.port }}
+            protocol: TCP
+        {{- end }}
+        {{- if .Values.env_var_enabled }}
         env:
+        {{- end}}
         {{- if .Values.appname_enabled }}
         - name: SPRING_APPLICATION_NAME
           value: {{ .Values.appName }}
@@ -146,86 +150,86 @@ spec:
         {{- end }}
         {{- if .Values.datasource_enabled }}
           {{- if and (eq .Values.app_type "ms") (eq .Values.databaseName "accountsdb") }}
-          - name: SPRING_DATASOURCE_USERNAME
-            valueFrom:
-              configMapKeyRef:
-                name: {{ .Values.global.configMapName }}
-                key: SPRING_DATASOURCE_USERNAME
-          - name: SPRING_DATASOURCE_PASSWORD
-            valueFrom:
-              configMapKeyRef:
-                name: {{ .Values.global.configMapName }}
-                key: SPRING_DATASOURCE_PASSWORD          
-          - name: SPRING_DATASOURCE_URL
-            valueFrom:
-              configMapKeyRef:
-                name: {{ .Values.global.configMapName }}
-                key: ACCOUNTS_SPRING_DATASOURCE_URL
+        - name: SPRING_DATASOURCE_USERNAME
+          valueFrom:
+            configMapKeyRef:
+              name: {{ .Values.global.configMapName }}
+              key: SPRING_DATASOURCE_USERNAME
+        - name: SPRING_DATASOURCE_PASSWORD
+          valueFrom:
+            configMapKeyRef:
+              name: {{ .Values.global.configMapName }}
+              key: SPRING_DATASOURCE_PASSWORD
+        - name: SPRING_DATASOURCE_URL
+          valueFrom:
+            configMapKeyRef:
+              name: {{ .Values.global.configMapName }}
+              key: ACCOUNTS_SPRING_DATASOURCE_URL
           {{- else if and (eq .Values.app_type "ms") (eq .Values.databaseName "cardsdb") }}
-          - name: SPRING_DATASOURCE_USERNAME
-            valueFrom:
-              configMapKeyRef:
-                name: {{ .Values.global.configMapName }}
-                key: SPRING_DATASOURCE_USERNAME
-          - name: SPRING_DATASOURCE_PASSWORD
-            valueFrom:
-              configMapKeyRef:
-                name: {{ .Values.global.configMapName }}
-                key: SPRING_DATASOURCE_PASSWORD
-          - name: SPRING_DATASOURCE_URL
-            valueFrom:
-              configMapKeyRef:
-                name: {{ .Values.global.configMapName }}
-                key: CARDS_SPRING_DATASOURCE_URL
+        - name: SPRING_DATASOURCE_USERNAME
+          valueFrom:
+            configMapKeyRef:
+              name: {{ .Values.global.configMapName }}
+              key: SPRING_DATASOURCE_USERNAME
+        - name: SPRING_DATASOURCE_PASSWORD
+          valueFrom:
+            configMapKeyRef:
+              name: {{ .Values.global.configMapName }}
+              key: SPRING_DATASOURCE_PASSWORD
+        - name: SPRING_DATASOURCE_URL
+          valueFrom:
+            configMapKeyRef:
+              name: {{ .Values.global.configMapName }}
+              key: CARDS_SPRING_DATASOURCE_URL
           {{- else if and (eq .Values.app_type "ms") (eq .Values.databaseName "loansdb") }}
-          - name: SPRING_DATASOURCE_USERNAME
-            valueFrom:
-              configMapKeyRef:
-                name: {{ .Values.global.configMapName }}
-                key: SPRING_DATASOURCE_USERNAME
-          - name: SPRING_DATASOURCE_PASSWORD
-            valueFrom:
-              configMapKeyRef:
-                name: {{ .Values.global.configMapName }}
-                key: SPRING_DATASOURCE_PASSWORD
-          - name: SPRING_DATASOURCE_URL
-            valueFrom:
-              configMapKeyRef:
-                name: {{ .Values.global.configMapName }}
-                key: LOANS_SPRING_DATASOURCE_URL
+        - name: SPRING_DATASOURCE_USERNAME
+          valueFrom:
+            configMapKeyRef:
+              name: {{ .Values.global.configMapName }}
+              key: SPRING_DATASOURCE_USERNAME
+        - name: SPRING_DATASOURCE_PASSWORD
+          valueFrom:
+            configMapKeyRef:
+              name: {{ .Values.global.configMapName }}
+              key: SPRING_DATASOURCE_PASSWORD
+        - name: SPRING_DATASOURCE_URL
+          valueFrom:
+            configMapKeyRef:
+              name: {{ .Values.global.configMapName }}
+              key: LOANS_SPRING_DATASOURCE_URL
           {{- else if and (eq .Values.app_type "db") (eq .Values.databaseName "accountsdb") }}
-          - name: MYSQL_DATABASE
-            valueFrom:
-              configMapKeyRef:
-                name: {{ .Values.global.configMapName }}
-                key: ACCOUNTSDB_NAME
-          - name: MYSQL_ROOT_PASSWORD
-            valueFrom:
-              configMapKeyRef:
-                name: {{ .Values.global.configMapName }}
-                key: ACCOUNTSDB_PASSWORD
+        - name: MYSQL_DATABASE
+          valueFrom:
+            configMapKeyRef:
+              name: {{ .Values.global.configMapName }}
+              key: ACCOUNTSDB_NAME
+        - name: MYSQL_ROOT_PASSWORD
+          valueFrom:
+            configMapKeyRef:
+              name: {{ .Values.global.configMapName }}
+              key: ACCOUNTSDB_PASSWORD
           {{- else if and (eq .Values.app_type "db") (eq .Values.databaseName "cardsdb") }}
-          - name: MYSQL_DATABASE
-            valueFrom:
-              configMapKeyRef:
-                name: {{ .Values.global.configMapName }}
-                key: CARDSDB_NAME
-          - name: MYSQL_ROOT_PASSWORD
-            valueFrom:
-              configMapKeyRef:
-                name: {{ .Values.global.configMapName }}
-                key: CARDSDB_PASSWORD
+        - name: MYSQL_DATABASE
+          valueFrom:
+            configMapKeyRef:
+              name: {{ .Values.global.configMapName }}
+              key: CARDSDB_NAME
+        - name: MYSQL_ROOT_PASSWORD
+          valueFrom:
+            configMapKeyRef:
+              name: {{ .Values.global.configMapName }}
+              key: CARDSDB_PASSWORD
           {{- else if and (eq .Values.app_type "db") (eq .Values.databaseName "loansdb") }}
-          - name: MYSQL_DATABASE
-            valueFrom:
-              configMapKeyRef:
-                name: {{ .Values.global.configMapName }}
-                key: LOANSDB_NAME
-          - name: MYSQL_ROOT_PASSWORD
-            valueFrom:
-              configMapKeyRef:
-                name: {{ .Values.global.configMapName }}
-                key: LOANSDB_PASSWORD
+        - name: MYSQL_DATABASE
+          valueFrom:
+            configMapKeyRef:
+              name: {{ .Values.global.configMapName }}
+              key: LOANSDB_NAME
+        - name: MYSQL_ROOT_PASSWORD
+          valueFrom:
+            configMapKeyRef:
+              name: {{ .Values.global.configMapName }}
+              key: LOANSDB_PASSWORD
           {{- end }}
         {{- end }}
         
