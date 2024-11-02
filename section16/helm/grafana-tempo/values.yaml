@@ -1108,7 +1108,11 @@ metricsGenerator:
   ##     cpu: 3
   ##     memory: 1024Mi
   ##
-  resources: {}
+  resources:
+    requests:
+      memory: 512Mi
+    limits:
+      memory: 1Gi
   ## Configure Pods Security Context
   ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-pod
   ## @param metricsGenerator.podSecurityContext.enabled Enabled metricsGenerator pods' Security Context
