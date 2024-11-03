@@ -23,14 +23,5 @@ dependencies:
 - name: message
   repository: file://../../../eazybank-services/message
   version: 0.1.0
-- name: accountsdb
-  repository: file://../../../eazybank-services/accountsdb
-  version: 0.1.0
-- name: cardsdb
-  repository: file://../../../eazybank-services/cardsdb
-  version: 0.1.0
-- name: loansdb
-  repository: file://../../../eazybank-services/loansdb
-  version: 0.1.0
-digest: sha256:b148cdb6a6c0faecbfd71bffcfbd2e934d2b4a3b77e422da23afc805e664797c
-generated: "2024-11-01T20:33:13.0145855Z"
+digest: sha256:5a7cf0278934175e915fa9bbe4953c800de7e2dd4a57bf9b50d327c47a0e0192
+generated: "2024-11-03T12:57:36.3428754Z"

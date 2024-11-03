@@ -10,7 +10,7 @@ replicaCount: 1
 
 image:
   repository: spartanghost17/loans
-  tag: s14
+  tag: s15
 
 containerPort: 8090
 
@@ -29,7 +29,7 @@ resouceserver_enabled: false
 otel_enabled: true
 kafka_enabled: false
 rabbit_enabled: true
-datasource_enabled: true
+datasource_enabled: false
 app_type: ms
 databaseName: loansdb
 env_var_enabled: true

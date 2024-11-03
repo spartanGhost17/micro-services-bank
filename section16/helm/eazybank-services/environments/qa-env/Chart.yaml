@@ -57,17 +57,17 @@ dependencies:
     version: 0.1.0
     repository: file://../../../eazybank-services/message
 
-  - name: accountsdb
-    version: 0.1.0
-    repository: file://../../../eazybank-services/accountsdb
-
-  - name: cardsdb
-    version: 0.1.0
-    repository: file://../../../eazybank-services/cardsdb
-
-  - name: loansdb
-    version: 0.1.0
-    repository: file://../../../eazybank-services/loansdb
+#  - name: accountsdb
+#    version: 0.1.0
+#    repository: file://../../../eazybank-services/accountsdb
+#
+#  - name: cardsdb
+#    version: 0.1.0
+#    repository: file://../../../eazybank-services/cardsdb
+#
+#  - name: loansdb
+#    version: 0.1.0
+#    repository: file://../../../eazybank-services/loansdb
 
   #- name: rabbit
   #  version: 0.1.0

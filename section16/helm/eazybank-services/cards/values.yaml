@@ -10,7 +10,7 @@ replicaCount: 1
 
 image:
   repository: spartanghost17/cards
-  tag: s14
+  tag: s15
 
 containerPort: 9000
 
@@ -29,7 +29,7 @@ resouceserver_enabled: false
 otel_enabled: true
 kafka_enabled: false
 rabbit_enabled: true
-datasource_enabled: true
+datasource_enabled: false
 app_type: ms
 databaseName: cardsdb
 env_var_enabled: true
