@@ -532,22 +532,22 @@ spec:
           value: configserver
         - name: SPRING_RABBITMQ_HOST
           valueFrom:
-            configMapkeyRef:
+            configMapKeyRef:
               name: eazybankdev-configmap
               key: SPRING_RABBITMQ_HOST
         - name: SPRING_RABBITMQ_USERNAME
           valueFrom:
-            configMapkeyRef:
+            configMapKeyRef:
               name: eazybankdev-configmap
               key: SPRING_RABBITMQ_USERNAME
         - name: SPRING_RABBITMQ_PASSWORD
           valueFrom:
-            configMapkeyRef:
+            configMapKeyRef:
               name: eazybankdev-configmap
               key: SPRING_RABBITMQ_PASSWORD
         - name: SPRING_RABBITMQ_PORT
           valueFrom:
-            configMapkeyRef:
+            configMapKeyRef:
               name: eazybankdev-configmap
               key: SPRING_RABBITMQ_PORT
 ---

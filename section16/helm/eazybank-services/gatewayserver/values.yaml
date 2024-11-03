@@ -10,7 +10,7 @@ replicaCount: 1
 
 image:
   repository: spartanghost17/gatewayserver
-  tag: s14
+  tag: s15
 
 containerPort: 8072
 
