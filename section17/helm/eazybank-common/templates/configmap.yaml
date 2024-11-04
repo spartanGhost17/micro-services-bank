@@ -1,0 +1,37 @@
+{{- define "common.configmap" -}}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Values.global.configMapName }}
+data:
+  SPRING_PROFILES_ACTIVE: "{{ .Values.global.activeProfile }}"
+  SPRING_CONFIG_IMPORT: "{{ .Values.global.configServerURL }}"
+  SPRING_CLOUD_KUBERNETES_DISCOVERY_DISCOVERY-SERVER-URL: "{{ .Values.global.discoveryServerURL }}"
+  SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK-SET-URI: "{{ .Values.global.keyCloakURL }}"
+  JAVA_TOOL_OPTIONS: "{{ .Values.global.openTelemetryJavaAgent }}"
+  OTEL_EXPORTER_OTLP_ENDPOINT: "{{ .Values.global.otelExporterEndPoint }}"
+  OTEL_METRICS_EXPORTER: "{{ .Values.global.otelMetricsExporter }}"
+  SPRING_CLOUD_STREAM_KAFKA_BINDER_BROKERS: "{{ .Values.global.kafkaBrokerURL }}"
+
+  SPRING_RABBITMQ_HOST: "{{ .Values.global.rabbitMQHost }}"
+  SPRING_RABBITMQ_USERNAME: "{{ .Values.global.rabbitMQUsername }}"
+  SPRING_RABBITMQ_PASSWORD: "{{ .Values.global.rabbitMQPassword }}"
+  SPRING_RABBITMQ_PORT: "{{ .Values.global.rabbitMQPort }}"
+  SPRING_DATA_REDIS_CONNECT-TIMEOUT: "{{ .Values.global.redisConnectTimeout }}"
+  SPRING_DATA_REDIS_HOST: "{{ .Values.global.redisHost }}"
+  SPRING_DATA_REDIS_PORT: "{{ .Values.global.redisPort }}"
+  SPRING_DATA_REDIS_TIMEOUT: "{{ .Values.global.redisTimeout }}"
+
+  ACCOUNTSDB_NAME: "{{ .Values.global.accountsDbName }}"
+  LOANSDB_NAME: "{{ .Values.global.loansDbName }}"
+  CARDSDB_NAME: "{{ .Values.global.cardsDbName }}"
+  ACCOUNTSDB_PASSWORD: "{{ .Values.global.accountsDbPassword }}"
+  LOANSDB_PASSWORD: "{{ .Values.global.cardsDbPassword }}"
+  CARDSDB_PASSWORD: "{{ .Values.global.loansDbPassword }}"
+  ACCOUNTS_SPRING_DATASOURCE_URL: "{{ .Values.global.accountsDatasourceURL }}"
+  LOANS_SPRING_DATASOURCE_URL: "{{ .Values.global.loansDatasourceURL }}"
+  CARDS_SPRING_DATASOURCE_URL: "{{ .Values.global.cardsDatasourceURL }}"
+  SPRING_DATASOURCE_USERNAME: "{{ .Values.global.datasourceUsername }}"
+  SPRING_DATASOURCE_PASSWORD: "{{ .Values.global.datasourcePassword }}"
+  
+{{- end -}}

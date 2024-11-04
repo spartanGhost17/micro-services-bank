@@ -1,0 +1,32 @@
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+deploymentName: eurekaserver-deployment
+serviceName: eurekaserver
+appLabel: eurekaserver
+appName: eurekaserver
+
+replicaCount: 1
+
+image:
+  repository: spartanghost17/eurekaserver
+  tag: s14
+
+containerPort: 8070
+
+service:
+  type: ClusterIP
+  ports:
+    - name: eurekaserver
+      port: 8070
+      targetPort: 8070
+
+appname_enabled: true
+profile_enabled: false
+config_enabled: true
+discovery_enabled: false
+resouceserver_enabled: false
+otel_enabled: true
+kafka_enabled: false
+rabbit_enabled: true
+env_var_enabled: true

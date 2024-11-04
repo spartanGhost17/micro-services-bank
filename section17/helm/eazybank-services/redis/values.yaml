@@ -1,0 +1,40 @@
+deploymentName: redis-deployment
+serviceName: redis
+appLabel: redis
+appName: redis
+
+replicaCount: 1
+
+image:
+  repository: redis
+  tag: latest
+
+containerPort: 6379
+
+service:
+  type: ClusterIP
+  ports:
+    - name: redis
+      port: 6379
+      targetPort: 6379
+
+# Health check settings
+healthcheck:
+  enabled: true
+  interval: 10s
+  timeout: 5s
+  retries: 10
+  start_period: 5s
+
+appname_enabled: false
+profile_enabled: false
+config_enabled: false
+discovery_enabled: false
+resouceserver_enabled: false
+otel_enabled: false
+kafka_enabled: false
+rabbit_enabled: false
+rabbit_server: false
+datasource_enabled: false
+app_type: ms
+env_var_enabled: false

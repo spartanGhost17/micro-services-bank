@@ -1,0 +1,34 @@
+global:
+  configMapName: eazybankdev-configmap
+  activeProfile: default
+  configServerURL: configserver:http://configserver:8071/
+  discoveryServerURL: http://spring-cloud-kubernetes-discoveryserver:80/
+  keyCloakURL: http://keycloak.default.svc.cluster.local:80/realms/master/protocol/openid-connect/certs
+  openTelemetryJavaAgent: "-javaagent:/app/libs/opentelemetry-javaagent-1.33.5.jar"
+  otelExporterEndPoint: http://tempo-grafana-tempo-distributor:4317
+  otelMetricsExporter: none
+  kafkaBrokerURL: kafka-controller-0.kafka-controller-headless.default.svc.cluster.local:9092
+
+  rabbitMQHost: rabbitmq.default.svc.cluster.local
+  rabbitMQUsername: rabbit
+  rabbitMQPassword: rabbit
+  rabbitMQPort: 5672
+
+  redisConnectTimeout: 2s
+  redisHost: redis-master.default.svc.cluster.local
+  redisPort: 6379
+  redisTimeout: 1s
+
+  accountsDbName: "accountsdb" #
+  loansDbName: "loansdb"
+  cardsDbName: "cardsdb"
+  accountsDbPassword: "root"
+  cardsDbPassword: "root"
+  loansDbPassword: "root"
+  accountsDatasourceURL: "jdbc:mysql://accountsdb:3306/accountsdb"
+  loansDatasourceURL: "jdbc:mysql://loansdb:3306/loansdb"
+  cardsDatasourceURL: "jdbc:mysql://cardsdb:3306/cardsdb"
+  datasourceUsername: "root"
+  datasourcePassword: "root"
+
+

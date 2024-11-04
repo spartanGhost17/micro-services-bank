@@ -1,0 +1,129 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: "accounts"
+  profiles:
+    active: "prod" #by default prod is active profile
+  datasource:
+    url: jdbc:h2:mem:testdb
+    driverClassName: org.h2.Driver
+    username: sa
+    password: ''
+  h2:
+    console:
+      enabled: true
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+  #datasource:
+  #  url: jdbc:mysql://localhost:3306/accountsdb
+  #  username: root
+  #  password: root
+  #jpa:
+  #  show-sql: true
+  #sql:
+  #  init:
+  #    mode: always
+
+  config:
+    import: "optional:configserver:http://localhost:8071/" #optional means configs are optional
+  cloud:
+    kubernetes:
+      discovery:
+        all-namespaces: true # applications in other kubernetes namespaces can be discovered
+    openfeign:
+      circuitbreaker:
+        enabled: true
+    function: # spring cloud functions definition (multiple definitions can be comma seperated)
+      definition: updateCommunication
+    stream:
+      bindings:
+        updateCommunication-in-0:
+          destination: communication-sent # exchange name
+          group: ${spring.application.name}
+        sendCommunication-out-0: # will bind output to send-communication exchange as outbound message on a queue
+          destination: send-communication # name of the exchange
+      kafka:
+        binder:
+          brokers:
+            - localhost:9092
+
+  rabbitmq:
+    host: "localhost"
+    port: 5672
+    username: "guest"
+    password: "guest"
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*" #expose all management endpoints
+  health:
+    readiness-state:
+      enabled: true
+    liveness-state:
+      enabled: true
+  endpoint:
+    shutdown:
+      enabled: true # deregister instance from eureka on shutdown
+    health:
+      probes:
+        enabled: true
+  info:
+    env:
+      enabled: true # enables info endpoint for Eureka dashboard
+  metrics: # expose metrics endpoint for prometheus or other metric collection
+    tags:
+      application: ${spring.application.name} # group metrics under application name
+
+
+endpoints:
+  shutdown:
+    enabled: true
+
+info:
+  app:
+    name: "accounts"
+    description: "Eazy Bank Accounts Application"
+    version: "1.0.0"
+
+# enable logging
+logging:
+  level:
+    com:
+      eazybank:
+        accounts: DEBUG
+  pattern:
+    level: "%5p [${spring.application.name},%X{trace_id},%X{span_id}]" # pattern for distributed tracing with Tempo
+
+resilience4j.circuitbreaker:
+    configs:
+      default:
+        slidingWindowSize: 10 #100 Monitor 100 requests before deciding whether to change the state
+        permittedNumberOfCallsInHalfOpenState: 2 #5 Allow 5 calls in half-open state to test the service's recovery
+        failureRateThreshold: 50 # Open the circuit if 50% of requests fail
+        waitDurationInOpenState: 10000 #20000 Keep the circuit breaker open for 20 seconds before transitioning to half-open state
+
+resilience4j.retry:
+  configs:
+    default:
+      maxAttempts: 3 # max retry attemps
+      waitDuration: 100 # 500
+      enableExponentialBackoff: true
+      exponentialBackoffMultiplier: 2
+      ignoreExceptions:
+        - java.lang.NullPointerException #ignore exceptions of type null pointer exception
+      retryExceptions:
+        - java.util.concurrent.TimeoutException
+
+resilience4j.ratelimiter:
+  configs:
+    default:
+      timeoutDuration: 1000 #500 This is the maximum time a thread will wait for permission before throwing an exception
+      limitRefreshPeriod: 5000 #60000 This defines how often the rate limiter refreshes its permissions. moderate traffic 5s is fine, high traffic consider 1s - 2s
+      limitForPeriod: 1 #100 This is the number of permissions available during one refresh period, between 20 and 50 requests in suitable (how many request can be handled per limitRefresh period)

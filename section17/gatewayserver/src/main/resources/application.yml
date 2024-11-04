@@ -1,0 +1,77 @@
+spring:
+  application:
+    name: "gatewayserver"
+  config:
+    import: "optional:configserver:http://localhost:8071/" #optional means configs are optional
+  cloud:
+
+    gateway: # tell gateway to connect with discovery server and locate all information about individual microservices
+      httpclient:
+        connectTimeout: 1000
+        responseTimeout: 10s #5s wait time seconds to get response from microservices
+    kubernetes:
+      discovery:
+        enabled: true # gateway leverage discovery server available in cluster
+        all-namespaces: true
+    discovery: # this is because of a present bug inside kubernetes discovery-client apparently not creating the necessary bean
+      client:
+        health-indicator:
+          enabled: false
+  #rabbitmq:
+  #  host: "localhost"
+  #  port: 5672
+  #  username: "guest"
+  #  password: "guest"
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: "http://localhost:7080/realms/master/protocol/openid-connect/certs" # downloads public certificate from resource server to validate the provided tokens
+
+  data: #redis
+    redis:
+      connect-timeout: 2s
+      host: localhost
+      port: 6379
+      timeout: 1s
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*" #expose all management endpoints
+  endpoint:
+    gateway:
+      enabled: true
+  info:
+    env:
+      enabled: true # enables info endpoint for Eureka dashboard
+  metrics: # expose metrics endpoint for prometheus or other metric collection
+    tags:
+      application: ${spring.application.name} # group metrics under application name
+
+
+info:
+  app:
+    name: "gatewayserver"
+    description: "Eazy Bank GateWay Server Application"
+    version: "1.0.0"
+
+# enable logging
+logging:
+  level:
+    com:
+      eazybank:
+        gatewayserver: DEBUG
+  pattern:
+    level: "%5p [${spring.application.name},%X{trace_id},%X{span_id}]"
+
+resilience4j:
+  circuitbreaker:
+    configs:
+      default:
+        slidingWindowSize: 10 #100 Monitor 100 requests before deciding whether to change the state
+        permittedNumberOfCallsInHalfOpenState: 2 #5 Allow 5 calls in half-open state to test the service's recovery
+        failureRateThreshold: 50 # Open the circuit if 50% of requests fail
+        waitDurationInOpenState: 10000 #20000 Keep the circuit breaker open for 20 seconds before transitioning to half-open state
